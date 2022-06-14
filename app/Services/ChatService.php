@@ -8,8 +8,8 @@ use App\Models\Chat;
 use App\Models\Media;
 use App\Models\Message;
 use App\Models\User;
+use App\Repositories\ChatRepository;
 use App\Traits\FileTrait;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection as SupportCollection;
@@ -21,7 +21,7 @@ class ChatService
     use FileTrait;
 
     public function __construct(
-        private Chat $repository = new Chat
+        private ChatRepository $repository
     )
     {
         
@@ -34,8 +34,7 @@ class ChatService
     public function getChats(?int $id): SupportCollection
     {
         /** @var Chat $fChat */
-        $fChat = $this->repository->newQuery()
-                                ->findOrFail($id);
+        $fChat = $this->repository->find($id);
 
         return $fChat->messages()
                     ->with([
@@ -50,21 +49,7 @@ class ChatService
      */
     public function getUserChats(User $user): Collection
     {
-        $res = $this->repository->newQuery()
-                                ->whereHas('messages', static function (Builder $qb) use($user): void {
-                                    $qb->where('user_id', $user->id);
-                                })
-                                ->with([
-                                    'status:id,status',
-                                    'members',
-                                    'messages' => static function (HasMany $hasManyQuery): void {
-                                        $hasManyQuery->orderBy('id', 'Desc')->first();
-                                        $hasManyQuery->with('see:message_id,is_seen');
-                                    }
-                                ])
-                                ->get();
-
-        return $res;
+        return $this->repository->getUserChats($user->id);
     }
 
     /**
@@ -122,7 +107,7 @@ class ChatService
     public function show(User $user, int $id): Collection
     {
         /** @var Chat $fChat */
-        $fChat = $this->repository->newQuery()->findOrFail($id);
+        $fChat = $this->repository->find($id);
 
         return $fChat->messages()
                     ->with([
@@ -182,19 +167,7 @@ class ChatService
      */
     public function chats(): SupportCollection
     {
-        $res = $this->repository->newQuery()
-                                ->with([
-                                    'status:id,status',
-                                    'members',
-                                    'messages' => static function (HasMany $hasManyQuery): void {
-                                        $hasManyQuery->orderBy('id', 'Desc')->first();
-                                        $hasManyQuery->with('see:message_id,is_seen');
-                                    }
-                                ])
-                                ->orderBy('id', 'Desc')
-                                ->get();
-
-        return $res;
+        return $this->repository->getChats();
     }
 
     /**
@@ -204,7 +177,6 @@ class ChatService
     private function uploadMedias(Message $message, iterable $data): void
     {
         if(array_key_exists('medias', $data)) {
-            \Log::info(json_encode($data));
             foreach ($data['medias'] as $key => $media) {
                 $uploadedMedias[$key] = $this->uploadFile("/chats/{$message->chat_id}/medias", $media);
             }
