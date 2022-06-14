@@ -1,0 +1,197 @@
+version: '3.9'
+
+x-php-cli: &php-cli
+    build:
+        context: ./php_cli
+        dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: ${CONTAINER_PROJECT_PATH}
+    volumes:
+        - ../:/var/project:ro
+
+services:
+    # Nginx Service
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        container_name: job-ngx
+        restart: unless-stopped
+        tty: true
+        ports:
+            - ${NGINX_PORT}:80
+        volumes:
+            - ../:${CONTAINER_PROJECT_PATH}:rw
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm
+        networks:
+            - job_network
+
+    # PHP Service
+    php-fpm:
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        container_name: job-php
+        restart: unless-stopped
+        # extra_hosts:
+            # - "host.docker.internal:host-gateway"       # for Xdebug
+        tty: true
+        environment:
+            # PHP_IDE_CONFIG: "serverName=job-php-fpm"    # for Xdebug
+            XDEBUG_MODE: debug
+            XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+        expose:
+            - 9000
+        volumes:
+            - ../:${CONTAINER_PROJECT_PATH}
+            # - ./php/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+            # - ./php/xdebug/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini:ro
+            # - ./php/xdebug/logs/xdebug.log:/tmp/xdebug.log
+        networks:
+            - job_network
+
+    # Postgres Service
+    postgres:
+        image: postgres:12
+        container_name: job-postgres
+        restart: unless-stopped
+        volumes:
+            - ./postgres/data/:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: devuser
+            POSTGRES_DB: devdb
+            POSTGRES_PASSWORD: devsecret
+            PGDATA: /var/lib/postgresql/data/pgdata
+        expose:
+            - 9000
+        ports:
+            - ${POSTGRES}:5432
+        networks:
+            - job_network
+
+    # Web-socket Service
+    web-socket:
+        <<: *php-cli
+        container_name: job-ws
+        command: ['./artisan', 'websockets:serve']
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm
+        ports:
+            - 6001:6001
+        networks:
+            - job_network
+
+    # REDIS Service
+    redis:
+        image: redis:latest
+        container_name: job-redis
+        restart: unless-stopped
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm
+        ports:
+            - ${REDIS_PORT}:6379
+        networks:
+            - job_network
+
+    # RabbitMQ Service
+    rabbitmq:
+        image: rabbitmq:3.9.1-management
+        container_name: job-rabbitmq
+        restart: unless-stopped
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm
+        # environment:
+            # RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+            # RABBITMQ_DEFAULT_USER: "rabbitmq" default: guest
+            # RABBITMQ_DEFAULT_PASS: "rabbitmq" default: guest
+            # RABBITMQ_DEFAULT_VHOST: "/"
+        ports:
+            - ${RABBIT_MQ_MANAGEMENT}:15672
+            - ${RABBIT_MQ_PORT}:5672
+        networks:
+            - job_network
+
+    # CRON Service
+    cron:
+         build:
+             context: ./cron
+             dockerfile: Dockerfile
+         container_name: job-cron
+         restart: unless-stopped
+         depends_on:
+             - php-fpm
+         links:
+             - php-fpm
+         volumes:
+             - ../:${CONTAINER_PROJECT_PATH}
+         working_dir: ${CONTAINER_PROJECT_PATH}
+         networks:
+             - job_network
+
+    # Web-Socket Service
+    mailhog:
+        image: mailhog/mailhog:latest
+        container_name: job-mailhog
+        restart: unless-stopped
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm
+        ports:
+            - ${MAILHOG_INTERFACE_PORT}:${MAILHOG_INTERFACE_PORT}
+            - ${MAILHOG_PORT}:${MAILHOG_PORT}
+        networks:
+            - job_network
+
+    # Queue Worker Service
+    queue-worker-default:
+        <<: *php-cli
+        container_name: job-queue-worker-default
+        depends_on:
+            - rabbitmq
+        links:
+            - rabbitmq
+        command: ['./artisan', 'rabbitmq:consume', '--sleep=1', '--queue=default']
+        networks:
+            - job_network
+
+    # Queue Worker Service
+    queue-worker-email:
+        <<: *php-cli
+        container_name: job-queue-worker-email
+        depends_on:
+            - queue-worker-default
+        links:
+            - queue-worker-default
+        command: ['./artisan', 'rabbitmq:consume', '--sleep=2', '--queue=email']
+        networks:
+            - job_network
+
+    # Queue Worker Service
+    queue-worker-notification:
+        <<: *php-cli
+        container_name: job-queue-worker-notification
+        depends_on:
+            - queue-worker-email
+        links:
+            - queue-worker-email
+        command: ['./artisan', 'rabbitmq:consume', '--sleep=3', '--queue=notification']
+        networks:
+            - job_network
+
+networks:
+    job_network:
+        driver: bridge
+
+# три матрицы
+# куб Английской матрицы
+# Граманайзер
