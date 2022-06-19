@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Base;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseModelRepository
@@ -19,7 +20,7 @@ abstract class BaseModelRepository
     /**
      * @return string
      */
-    public abstract function getModel(): string;
+    protected abstract function getModel(): string;
 
     /**
      * @return void
@@ -43,5 +44,14 @@ abstract class BaseModelRepository
     public function find(int $id): Model
     {
         return $this->getModeClone()->newQuery()->findOrFail($id);
+    }
+
+    /**
+     * @param array $columns
+     * @return Collection
+     */
+    public function get(array $columns = ['*']): Collection
+    {
+        return $this->getModeClone()->newQuery()->get($columns);
     }
 }

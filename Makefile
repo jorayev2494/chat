@@ -31,9 +31,12 @@ ps:		## Show project process
 
 cc:		## Clear cache
 	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm ./artisan optimize:clear
-
+ 
 vendor_install:		## Vendor install
 	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm composer install --ignore-platform-reqs
+
+ws_logs:
+	@docker-compose --file $(COMPOSE_FILE_PATH) logs -f web-socket
 
 .PHONY: help
 help:	## Show Project commands

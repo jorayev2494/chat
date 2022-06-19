@@ -2,12 +2,12 @@ version: '3.9'
 
 x-php-cli: &php-cli
     build:
-        context: ./php_cli
+        context: ./php
         dockerfile: Dockerfile
     restart: unless-stopped
     working_dir: ${CONTAINER_PROJECT_PATH}
     volumes:
-        - ../:/var/project:ro
+        - ../:/var/project
 
 services:
     # Nginx Service
@@ -152,7 +152,7 @@ services:
         networks:
             - job_network
 
-    # Queue Worker Service
+    # # Queue Worker Service
     queue-worker-default:
         <<: *php-cli
         container_name: job-queue-worker-default
@@ -164,29 +164,29 @@ services:
         networks:
             - job_network
 
-    # Queue Worker Service
-    queue-worker-email:
-        <<: *php-cli
-        container_name: job-queue-worker-email
-        depends_on:
-            - queue-worker-default
-        links:
-            - queue-worker-default
-        command: ['./artisan', 'rabbitmq:consume', '--sleep=2', '--queue=email']
-        networks:
-            - job_network
+    # # Queue Worker Service
+    # queue-worker-email:
+    #     <<: *php-cli
+    #     container_name: job-queue-worker-email
+    #     depends_on:
+    #         - queue-worker-default
+    #     links:
+    #         - queue-worker-default
+    #     command: ['./artisan', 'rabbitmq:consume', '--sleep=2', '--queue=email']
+    #     networks:
+    #         - job_network
 
-    # Queue Worker Service
-    queue-worker-notification:
-        <<: *php-cli
-        container_name: job-queue-worker-notification
-        depends_on:
-            - queue-worker-email
-        links:
-            - queue-worker-email
-        command: ['./artisan', 'rabbitmq:consume', '--sleep=3', '--queue=notification']
-        networks:
-            - job_network
+    # # Queue Worker Service
+    # queue-worker-notification:
+    #     <<: *php-cli
+    #     container_name: job-queue-worker-notification
+    #     depends_on:
+    #         - queue-worker-email
+    #     links:
+    #         - queue-worker-email
+    #     command: ['./artisan', 'rabbitmq:consume', '--sleep=3', '--queue=notification']
+    #     networks:
+    #         - job_network
 
 networks:
     job_network:

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
 
@@ -30,6 +31,15 @@ class AuthServiceProvider extends ServiceProvider
                 'prefix' => 'api/oauth'
             ]
         );
+
+        // Auth::viaRequest('broadcast-auth',function ($request) {
+        //     dd(
+        //         __METHOD__,
+        //         $request->toArray()
+        //     );
+        //     // $client = User::where('auth_token',$request->header('auth-token'))->first();
+        //     return true;
+        // });
         
         // Personal access client created successfully.
         // Client ID: 3

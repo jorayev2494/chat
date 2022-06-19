@@ -28,7 +28,7 @@ class CreateMessageEvent implements ShouldBroadcastNow
         public MessageResource $message
     )
     {
-        //
+        
     }
 
     /**
@@ -36,9 +36,12 @@ class CreateMessageEvent implements ShouldBroadcastNow
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): array
     {
-        return new Channel("chat.{$this->message->chat_id}");
+        return [
+            new Channel("chat.{$this->message->chat_id}"),
+            new PrivateChannel("chat.{$this->message->chat_id}")
+        ];
     }
 
     /**

@@ -13,7 +13,7 @@ class ChatRepository extends BaseModelRepository
     /**
      * @return string
      */
-    public function getModel(): string
+    protected function getModel(): string
     {
         return Chat::class;
     }
