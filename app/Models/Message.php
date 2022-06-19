@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Events\CreateMessageEvent;
+use App\Http\Resources\MessageResource;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +37,48 @@ class Message extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
+
+    /**
+     * @param string $event
+     * @return BroadcastableModelEventOccurred
+     */
+    protected function newBroadcastableEvent(string $event): BroadcastableModelEventOccurred
+    {
+        return (new BroadcastableModelEventOccurred($this, $event)); //->dontBroadcastToCurrentUser();
+    }
+
+    /**
+     * @param string $event
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn(string $event): array
+    {
+        return [
+            // new Channel("chat.{$this->chat_id}"),
+            new PrivateChannel("chat.{$this->chat_id}")
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function broadcastAs(string $event): string
+    {
+        return match ($event) {
+            'created' => 'message.sent',
+            default => $event
+        };
+    }
+
+    /**
+     * @return array
+     */
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->loadMissing('user', 'medias')
+        ];
+    }
 
     /**
      * @return HasOne

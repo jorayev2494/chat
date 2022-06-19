@@ -11,9 +11,7 @@ use App\Models\User;
 use App\Repositories\ChatRepository;
 use App\Traits\FileTrait;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection as SupportCollection;
-use Illuminate\Support\Facades\Log;
 
 class ChatService
 {
@@ -94,7 +92,7 @@ class ChatService
             'see'
         ]);
 
-        CreateMessageEvent::broadcast($user, MessageResource::make($result));
+        // CreateMessageEvent::broadcast($user, MessageResource::make($result))->toOthers();
 
         return $result;
     }

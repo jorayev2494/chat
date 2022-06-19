@@ -20,5 +20,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 Broadcast::channel('broadcast-event', static fn (User $user, int $id): bool => true);
 Broadcast::channel('chat.{chat_id}', static function (User $user, $chatId): bool {
-    return ($user->id && $chatId);
+    return true;
 });

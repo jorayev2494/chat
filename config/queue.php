@@ -100,9 +100,9 @@ return [
                     // 'exchange_type' => 'direct',
                     // 'exchange_routing_key' => 'application.%s',
 
-                    'reroute_failed' => true,
-                    'failed_exchange' => 'failed-exchange',
-                    'failed_routing_key' => 'application.failed.%s',
+                    // 'reroute_failed' => true,
+                    // 'failed_exchange' => 'failed-exchange',
+                    // 'failed_routing_key' => 'application.failed.%s',
                 ],
             ],
 
@@ -127,8 +127,8 @@ return [
     */
 
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
-        'database' => env('DB_CONNECTION', 'mysql'),
+        'driver' => 'database-uuids',
+        'database' => 'pgsql',
         'table' => 'failed_jobs',
     ],
 

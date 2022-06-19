@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'auth:api'], static function (): void {
     Route::get('/profile', 'ProfileController');
 
+    Route::apiResource('/profile', 'Api\ProfileController');
+
     // Route::get('/users', 'Api\UserController@index');
     Route::resource('/users', 'ApiController');
     Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
