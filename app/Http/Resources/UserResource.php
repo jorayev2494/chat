@@ -10,11 +10,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class UserResource extends JsonResource
 {
-    private array $defaultAvatars = [
-        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars.png',
-        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-3.png',
-        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-2.png'
-    ];
+    // private array $defaultAvatars = [
+    //     'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars.png',
+    //     'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-3.png',
+    //     'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-2.png'
+    // ];
 
     /**
      * Transform the resource into an array.
@@ -28,7 +28,7 @@ class UserResource extends JsonResource
             'id' => $this->resource->id,
             'last_name' => $this->resource->last_name,
             'first_name' => $this->resource->first_name,
-            'avatar' => $this->defaultAvatars[random_int(0, 2)],
+            'avatar' => $this->resource->avatar,
             $this->mergeWhen(
                 array_key_exists('first_name', $this->resource->attributesToArray()) && array_key_exists('first_name', $this->resource->attributesToArray()),
                 fn () => ['full_name' => $this->resource->fullName]

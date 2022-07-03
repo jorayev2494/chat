@@ -25,7 +25,7 @@ class ChatRepository extends BaseModelRepository
     public function getUserChats(int $userId): Collection
     {
         return $this->getModeClone()->newQuery()
-                                    ->whereHas('messages', static function (Builder $qb) use($userId): void {
+                                    ->whereHas('members', static function (Builder $qb) use($userId): void {
                                         $qb->where('user_id', $userId);
                                     })
                                     ->with([

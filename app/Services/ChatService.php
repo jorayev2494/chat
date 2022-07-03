@@ -57,6 +57,7 @@ class ChatService
     public function store(User $user, array $data): Message
     {
         if (array_key_exists('user_id', $data)) {
+            /** @var User $toUser */
             $toUser = User::find($data['user_id']);
 
             $toUserChats = $toUser->chats()->where('status_id', 1)->pluck('chat_id')->toArray();
@@ -80,6 +81,8 @@ class ChatService
                                     }
                                 )
                                 ->toArray();
+
+            $toUser->chats()->attach($data['chat_id']);
         }
 
         /** @var Message $result */
@@ -109,7 +112,7 @@ class ChatService
 
         return $fChat->messages()
                     ->with([
-                        'user:id,first_name,last_name,email',
+                        'user:id,first_name,last_name,avatar,email',
                         'medias',
                         'see'
                     ])
