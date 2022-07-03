@@ -66,6 +66,8 @@ class Message extends Model
     {
         return match ($event) {
             'created' => 'message.sent',
+            'updated' => 'message.updated',
+            'deleted' => 'message.deleted',
             default => $event
         };
     }
@@ -76,7 +78,7 @@ class Message extends Model
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->loadMissing('user', 'medias')
+            'message' => MessageResource::make($this->loadMissing('user', 'medias'))
         ];
     }
 

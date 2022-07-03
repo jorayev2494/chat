@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -26,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'avatar',
         'email',
         'password',
         'is_admin',

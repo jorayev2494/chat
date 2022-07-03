@@ -18,6 +18,10 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com'
         ]);
 
+        \App\Models\User::factory()->create([
+            'email' => 'admin2@gmail.com'
+        ]);
+
         \App\Models\User::factory(10)->create();
 
         // Client ID: 1

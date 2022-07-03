@@ -10,6 +10,16 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+
+    /**
+     * @var array $defaultAvatars
+     */
+    private array $defaultAvatars = [
+        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars.png',
+        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-3.png',
+        'https://www.disneyplusinformer.com/wp-content/uploads/2021/06/Luca-Profile-Avatars-2.png'
+    ];
+
     /**
      * Define the model's default state.
      *
@@ -20,6 +30,7 @@ class UserFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
+            'avatar' => $this->defaultAvatars[random_int(0, 2)],
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'is_admin' => false,

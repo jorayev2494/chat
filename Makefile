@@ -35,8 +35,17 @@ cc:		## Clear cache
 vendor_install:		## Vendor install
 	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm composer install --ignore-platform-reqs
 
-ws_logs:
+wsLogs:		## Logs web-socket
 	@docker-compose --file $(COMPOSE_FILE_PATH) logs -f web-socket
+
+wsRestart:	## Restart web-socket
+	@docker-compose --file $(COMPOSE_FILE_PATH) restart web-socket
+
+rabbitMQLogs:
+	@docker-compose --file $(COMPOSE_FILE_PATH) logs -f rabbitmq
+
+rabbitMQRestart:
+	@docker-compose --file $(COMPOSE_FILE_PATH) restart rabbitmq
 
 .PHONY: help
 help:	## Show Project commands

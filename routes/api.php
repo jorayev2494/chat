@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:api'], static function (): void {
     // Route::get('/users', 'Api\UserController@index');
     Route::resource('/users', 'ApiController');
     Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
-    Route::post('/chats/{chat}', 'Api\ChatController@update');
+    Route::post('/chats/{chat}', ['uses' => 'Api\ChatController@update', 'as' => 'chats.update']);
 });
 
 Route::post('/ping/ws', 'TestController@pingWs');

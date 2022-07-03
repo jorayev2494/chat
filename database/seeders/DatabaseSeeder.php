@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         $this->call(ChatStatusSeeder::class);
-        $this->call(MessageSeeder::class);
+        // $this->call(MessageSeeder::class);
     }
 }
