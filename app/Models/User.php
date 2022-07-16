@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Traits\MustVerifyPhoneTrait;
+use App\Models\Base\JWTAuth;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends JWTAuth 
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use MustVerifyPhoneTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +30,9 @@ class User extends Authenticatable
         'last_name',
         'avatar',
         'email',
+        'phone',
+        'phone_country_id',
+        'country_id',
         'password',
         'is_admin',
     ];
@@ -47,9 +53,10 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime:Y-m-d H:i:s',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'email_verified_at' => 'timestamp',
+        'phone_verified_at' => 'timestamp',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
 
     /**
@@ -99,5 +106,44 @@ class User extends Authenticatable
     public function messagesSees(): HasMany
     {
         return $this->hasMany(MessageSee::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function codes(): HasMany
+    {
+        return $this->hasMany(UserCode::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function phoneCountry(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'phone_country_id', 'id');
+    }
+
+    public function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => config('app.url') . "/storage/{$this->attributes['avatar']}"
+        );
     }
 }

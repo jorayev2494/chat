@@ -29,6 +29,28 @@ abstract class BaseModelRepository
     {
        $this->model = app()->make($this->getModel()); 
     }
+    
+
+    /**
+     * @var string[] $columns
+     */
+    private array $columns = ['*'];
+
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @param string ...$columns
+     * @return self
+     */
+    public function setColumns(string ...$columns): self
+    {
+        $this->columns = $columns;
+
+        return $this;
+    }
 
     /**
      * @return Model
@@ -44,6 +66,16 @@ abstract class BaseModelRepository
     public function find(int $id): Model
     {
         return $this->getModeClone()->newQuery()->findOrFail($id);
+    }
+
+    public function findByOrFail(string $column, string $value, array $columns = null): Model
+    {
+        return $this->getModeClone()->newQuery()->where($column, $value)->select($columns ?: $this->columns)->firstOrFail();
+    }
+
+    public function findByOrNull(string $column, string $value, array $columns = null): Model
+    {
+        return $this->getModeClone()->newQuery()->where($column, $value)->select($columns ?: $this->columns)->first();
     }
 
     /**

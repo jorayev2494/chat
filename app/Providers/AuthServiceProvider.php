@@ -26,11 +26,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        Passport::routes(
-            null, [
-                'prefix' => 'api/oauth'
-            ]
-        );
+        // Passport::routes(
+        //     null, [
+        //         'prefix' => 'api/oauth'
+        //     ]
+        // );
 
         // Auth::viaRequest('broadcast-auth',function ($request) {
         //     dd(

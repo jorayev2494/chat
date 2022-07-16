@@ -35,6 +35,12 @@ cc:		## Clear cache
 vendor_install:		## Vendor install
 	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm composer install --ignore-platform-reqs
 
+nginxLogs:		## Logs Nginx
+	@docker-compose --file $(COMPOSE_FILE_PATH) logs -f nginx
+
+nginxRestart:	## Restart Nginx
+	@docker-compose --file $(COMPOSE_FILE_PATH) restart nginx
+
 wsLogs:		## Logs web-socket
 	@docker-compose --file $(COMPOSE_FILE_PATH) logs -f web-socket
 
@@ -46,6 +52,12 @@ rabbitMQLogs:
 
 rabbitMQRestart:
 	@docker-compose --file $(COMPOSE_FILE_PATH) restart rabbitmq
+
+migrate:		## Migrate
+	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm ./artisan migrate
+
+migrateSeed:		## Migrate Seed
+	@docker-compose --file $(COMPOSE_FILE_PATH) exec php-fpm ./artisan migrate:fresh --seed
 
 .PHONY: help
 help:	## Show Project commands

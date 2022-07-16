@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
@@ -19,15 +20,31 @@ use Illuminate\Support\Facades\Route;
 //
 //});
 
-Route::group(['middleware' => 'auth:api'], static function (): void {
-    Route::get('/profile', 'ProfileController');
+Route::group(['prefix' => 'auth', 'middleware' => ['api'], 'namespace' => 'Auth'], static function (Router $router): void {
+    $router->post('/register', 'AuthorizationController@register');
+    $router->post('/login', 'AuthorizationController@login');
 
-    Route::apiResource('/profile', 'Api\ProfileController');
+    $router->group(['prefix' => 'phone', 'namespace' => 'Phone'], static function (Router $router): void {
+        $router->post('/code', 'AuthorizationPhoneController@registerCode');
+        $router->put('/code', 'AuthorizationPhoneController@getAccount');
+        // $router->post('/login', 'AuthorizationPhoneController@login');
+    });
+});
 
-    // Route::get('/users', 'Api\UserController@index');
-    Route::resource('/users', 'ApiController');
-    Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
-    Route::post('/chats/{chat}', ['uses' => 'Api\ChatController@update', 'as' => 'chats.update']);
+Route::group(['middleware' => 'auth:api'], static function (Router $router): void {
+    $router->controller('ProfileController')->group(static function (Router $router): void {
+        $router->get('/profile', 'index');
+        $router->post('/profile', 'update');
+        $router->delete('/profile', 'destroy');
+    });
+
+
+//     Route::apiResource('/profile', 'ProfileController');
+
+//     // Route::get('/users', 'Api\UserController@index');
+//     Route::resource('/users', 'ApiController');
+//     Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
+//     Route::post('/chats/{chat}', ['uses' => 'Api\ChatController@update', 'as' => 'chats.update']);
 });
 
 Route::post('/ping/ws', 'TestController@pingWs');
