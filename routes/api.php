@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Bus;
@@ -45,6 +46,12 @@ Route::group(['middleware' => 'auth:api'], static function (Router $router): voi
 //     Route::resource('/users', 'ApiController');
 //     Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
 //     Route::post('/chats/{chat}', ['uses' => 'Api\ChatController@update', 'as' => 'chats.update']);
+});
+
+Route::get('/countries', static function () {
+    $result = Country::all();
+
+    return response()->json($result);
 });
 
 Route::post('/ping/ws', 'TestController@pingWs');
