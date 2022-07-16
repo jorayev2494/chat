@@ -1,6 +1,7 @@
 FROM nginx:latest
 
 ADD ./project-nginx.conf /etc/nginx/conf.d/default.conf
+ADD ./ws-nginx.conf /etc/nginx/conf.d/ws-nginx.conf
 
 RUN nproc
 RUN lscpu

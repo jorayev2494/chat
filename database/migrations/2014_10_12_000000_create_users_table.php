@@ -15,12 +15,21 @@ return new class extends Migration
     {
         Schema::create('users', static function (Blueprint $table): void {
             $table->id();
-            $table->string('last_name');
-            $table->string('first_name');
+            $table->string('last_name')->nullable();
+            $table->string('first_name')->nullable();
             $table->string('avatar')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
+            $table->string('phone')->unique()->nullable();
+
+            $table->unsignedBigInteger('phone_country_id')->nullable();
+            $table->foreign('phone_country_id')->on('countries')->references('id')->nullOnDelete();
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->string('phone_code')->nullable();
+            $table->foreign('country_id')->on('countries')->references('id')->nullOnDelete();
+
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->string('password')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();

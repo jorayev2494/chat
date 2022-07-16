@@ -188,6 +188,21 @@ services:
     #     networks:
     #         - job_network
 
+    redoc:
+        image: redocly/redoc
+        container_name: job-redoc
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - ../docs/:/usr/share/nginx/html/swagger
+        environment:
+            - SPEC_URL=swagger/redocly.yaml
+        ports:
+            - 8081:80
+            - 5856:8080
+        networks:
+            - job_network
+
 networks:
     job_network:
         driver: bridge

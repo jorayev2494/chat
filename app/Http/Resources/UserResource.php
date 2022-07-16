@@ -29,14 +29,17 @@ class UserResource extends JsonResource
             'last_name' => $this->resource->last_name,
             'first_name' => $this->resource->first_name,
             'avatar' => $this->resource->avatar,
+            'phone' => $this->resource->phone,
+            'phone_country' => CountryResource::make($this->whenLoaded('phoneCountry')),
             $this->mergeWhen(
                 array_key_exists('first_name', $this->resource->attributesToArray()) && array_key_exists('first_name', $this->resource->attributesToArray()),
                 fn () => ['full_name' => $this->resource->fullName]
             ),
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'email' => $this->resource->email,
             'is_admin' => $this->resource->is_admin,
-            'created_at' => $this->resource->created_at?->format('Y-d-m H:i:s'),
-            'updated_at' => $this->resource->updated_at?->format('Y-d-m H:i:s'),
+            'created_at' => $this->resource->created_at,
+            'updated_at' => $this->resource->updated_at,
         ];
     }
 }
