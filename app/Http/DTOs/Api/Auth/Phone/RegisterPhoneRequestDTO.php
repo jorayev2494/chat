@@ -19,7 +19,7 @@ class RegisterPhoneRequestDTO extends DataTransferObject implements FromRequestD
      * @param Request|FormRequest $formRequest
      * @return static
      */
-    public static function makeFromRequest(Request|FormRequest $formRequest): self
+    public static function makeFromRequest(Request|FormRequest $formRequest): static
     {
         return new static(
             phone_country_id: $formRequest->get('phone_country_id'),

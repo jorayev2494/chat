@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Api\Auth\Phone;
 
-use App\Exceptions\Api\Auth\InvalidCredentialsException;
 use App\Http\DTOs\Api\Auth\Phone\LoginPhoneRequestDTO;
 use App\Http\DTOs\Api\Auth\Phone\RegisterPhoneCodeRequestDTO;
-use App\Http\DTOs\Api\Auth\Phone\ResentCodeRequestDTO;
-use App\Http\Requests\Api\Auth\Phone\AuthorizationResentCodeRequest;
-use App\Models\Device;
+use App\Http\DTOs\Api\Auth\Phone\RegisterPhoneRequestDTO;
 use App\Models\Enums\UserCodeEnum;
 use App\Models\User;
 use App\Models\UserCode;
@@ -17,6 +14,8 @@ use App\Repositories\UserCodeRepository;
 use App\Repositories\UserRepository;
 use App\Traits\Auth\AuthorizationTrait;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Token;
 
 class AuthorizationPhoneService
 {
@@ -55,38 +54,23 @@ class AuthorizationPhoneService
     public function login(LoginPhoneRequestDTO $dataDTO): array
     {
         $userCodeRepository = resolve(UserCodeRepository::class);
-        /** @var UserCode $foundAccountCode */
-        $foundAccountCode = $userCodeRepository->setColumns('id', 'user_id', 'type')->findByOrFail('code', $dataDTO->phone_code);
+        /** @var UserCode $foundUserCode */
+        $foundUserCode = $userCodeRepository->setColumns('id', 'user_id', 'type')->findByOrFail('code', $dataDTO->phone_code);
 
-        if (! $foundAccountCode->user->hasVerifiedPhone()) {
-            $foundAccountCode->user->markPhoneAsVerified();
+        if (! $foundUserCode->user->hasVerifiedPhone()) {
+            $foundUserCode->user->markPhoneAsVerified();
         }
 
         /** @var string|bool $token */
-        if (! $token = Auth::login($foundAccountCode->user)) {
-            throw new InvalidCredentialsException();
+        if (! $token = Auth::login($foundUserCode->user)) {
+            dd(
+                __METHOD__,
+                'Auth Exception'
+            );
         }
 
-        /** @var Device $device */
-        $device = $foundAccountCode->user->addDevice($dataDTO->device_id);
+        $foundUserCode->delete();
 
-        $foundAccountCode->delete();
-
-        return $this->respondWithToken($token, $device);
-    }
-
-    /**
-     * @param ResentCodeRequestDTO $dataDTO
-     * @return array
-     */
-    public function resendCode(ResentCodeRequestDTO $dataDTO): array
-    {
-        $fountAccount = $this->repository->findUserByPhoneCountryIdAndPhoneNumber($dataDTO->phone_country_id, $dataDTO->phone);
-        /** @var UserCode $userCode */
-        $userCode = $fountAccount->createCode(UserCodeEnum::REGISTER_PHONE);
-
-        return [
-            'phone_code' => $userCode->code
-        ];
+        return $this->respondWithToken($token);
     }
 }

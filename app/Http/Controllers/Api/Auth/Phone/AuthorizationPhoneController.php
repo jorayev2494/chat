@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\DTOs\Api\Auth\Phone\LoginPhoneRequestDTO;
 use App\Http\DTOs\Api\Auth\Phone\RegisterPhoneCodeRequestDTO;
 use App\Http\DTOs\Api\Auth\Phone\RegisterPhoneRequestDTO;
-use App\Http\DTOs\Api\Auth\Phone\ResentCodeRequestDTO;
 use App\Http\Requests\Api\Auth\Phone\AuthorizationPhoneCodeRegisterRequest;
 use App\Http\Requests\Api\Auth\Phone\AuthorizationPhoneLoginRequest;
 use App\Http\Requests\Api\Auth\Phone\AuthorizationPhoneRegisterController;
 use App\Http\Requests\Api\Auth\Phone\AuthorizationPhoneRegisterRequest;
-use App\Http\Requests\Api\Auth\Phone\AuthorizationResentCodeRequest;
 use App\Services\Api\Auth\Phone\AuthorizationPhoneService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,14 +44,6 @@ class AuthorizationPhoneController extends Controller
     {
         $dataDTO = LoginPhoneRequestDTO::makeFromRequest($request);
         $result = $this->service->login($dataDTO);
-
-        return response()->json($result);
-    }
-
-    public function resendCode(AuthorizationResentCodeRequest $request): JsonResponse
-    {
-        $dataDTO = ResentCodeRequestDTO::makeFromRequest($request);
-        $result = $this->service->resendCode($dataDTO);
 
         return response()->json($result);
     }

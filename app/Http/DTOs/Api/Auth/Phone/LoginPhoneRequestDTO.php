@@ -14,19 +14,17 @@ class LoginPhoneRequestDTO extends DataTransferObject implements FromRequestDTO
     public readonly string $phone_code;
     public readonly int $phone_country_id;
     public readonly string $phone;
-    public readonly string $device_id;
 
     /**
      * @param Request|FormRequest $formRequest
      * @return static
      */
-    public static function makeFromRequest(Request|FormRequest $formRequest): self
+    public static function makeFromRequest(Request|FormRequest $formRequest): static
     {
         return new static(
             phone_country_id: $formRequest->get('phone_country_id'),
             phone: $formRequest->get('phone'),
-            phone_code: $formRequest->get('phone_code'),
-            device_id: $formRequest->get('device_id')
+            phone_code: $formRequest->get('phone_code')
         );
     }
 }

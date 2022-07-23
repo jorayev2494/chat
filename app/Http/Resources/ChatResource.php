@@ -23,24 +23,11 @@ class ChatResource extends JsonResource
             'user_id' => $this->resource->user_id,
             'status_id' => $this->resource->status_id,
             $this->mergeWhen($this->resource->relationLoaded('status'), ['type' => $this->resource->status->status]),
-            
-            // Merges
-            'messages_unseen_count' => $this->when(
-                array_key_exists('messages_unseen_count', $this->resource->attributesToArray()),
-                $this->resource->messages_unseen_count
-            ),
-            'last_message' => $this->when(
-                array_key_exists('last_message', $this->resource->attributesToArray()),
-                MessageResource::make($this->resource->last_message)
-            ),
-            
-            // Relations
             'members' => UserResource::collection($this->whenLoaded('members')),
             'messages' => MessageResource::collection($this->whenLoaded('messages')),
-
-            'deleted_at' => $this->resource->deleted_at,
-            'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->updated_at,
+            'deleted_at' => $this->resource->deleted_at?->format('Y-d-m H:i:s'),
+            'created_at' => $this->resource->created_at?->format('Y-d-m H:i:s'),
+            'updated_at' => $this->resource->updated_at?->format('Y-d-m H:i:s'),
         ];
     }
 }

@@ -19,7 +19,7 @@ class ProfileUpdateRequestDTO extends DataTransferObject implements FromRequestD
     public readonly int $phone_country_id;
     public readonly int $country_id;
 
-    public static function makeFromRequest(Request|FormRequest $formRequest): self
+    public static function makeFromRequest(Request|FormRequest $formRequest): static
     {
         return new static(
             first_name: $formRequest->get('first_name'),

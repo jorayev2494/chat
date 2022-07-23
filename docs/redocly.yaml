@@ -1,0 +1,3849 @@
+openapi: 3.0.0
+servers:
+  - description: Local server
+    url: http://127.0.0.1:8082/api
+
+  - description: Develop server
+    url: http://80.208.225.82:8082/api
+info:
+  description: |
+    This is a sample server Petstore server.
+    You can find out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).
+    For this sample, you can use the api key `special-key` to test the authorization filters.
+    # Introduction
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+    # OpenAPI Specification
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+    # Cross-Origin Resource Sharing
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+    And that allows cross-domain communication from the browser.
+    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+    # Authentication
+    Petstore offers two forms of authentication:
+      - API Key
+      - OAuth2
+    OAuth2 - an open protocol to allow secure authorization in a simple
+    and standard method from web, mobile and desktop applications.
+    <SecurityDefinitions />
+  version: 1.0.0
+  title: Mesgen Logistics
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: Djek-zb
+    email: jorayev2494@gmail.com
+    url: https://github.com/Djek-zb
+  x-logo:
+    url: 'https://mesgenlogistics.com/images/logo160.png'
+    altText: Mesgen Logistics
+
+#  license:
+#    name: Apache 2.0
+#    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+# externalDocs:
+#   description: Find out how to create Github repo for your OpenAPI spec.
+#   url: 'https://github.com/Rebilly/generator-openapi-repo'
+
+tags:
+  - description: Everything about your Pets
+    name: Admin Sliders
+
+#  - description: Access to Petstore orders
+#    name: store
+#
+#  - description: Operations about user
+#    name: user
+#
+#  - description: |
+#      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+#    x-displayName: The Pet Model
+#    name: pet_model
+#
+#  - description: |
+#      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+#    name: store_model
+#    x-displayName: The Order Model
+
+x-tagGroups:
+  - name: Admin
+    tags:
+      - Admin login
+      - Admin Restore
+      - Admin Profile
+      - Admin Sliders
+      - Admin Socials
+      - Admin Slider Blocks
+      - Admin Countries
+      - Admin Address
+      - Admin Phones
+      - Admin About Company
+      - Admin About Steps
+      - Admin Partners
+      - Admin Blogs
+      - Admin Services
+      - Admin Steps
+      - Admin Users
+      - Admin Processes
+      - Admin Chooses
+      - Admin Work hours
+      - Admin Text Translates
+
+  - name: Client
+    tags:
+      - Client
+
+paths:
+  /admin/auth/login:
+    post:
+      summary: "Admin login"
+      tags:
+        - Admin login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "user@gmail.com"
+                password:
+                  type: string
+                  example: "secret"
+                  minLength: 6
+                  maxLength: 20
+      responses:
+        200:
+          description: "Success response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwODIvYXBpL2FkbWluL2F1dGgvbG9naW4iLCJpYXQiOjE2NDkzNjcwNTQsImV4cCI6MTY0OTM3MDY1NCwibmJmIjoxNjQ5MzY3MDU0LCJqdGkiOiJ0aFNZYXM1WUpsWHpOM2VHIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.wjAOSHUSC7-XxShDEgoKYamdQDsyOuqF02KyrFsRoSA"
+                  token_type:
+                    type: string
+                    example: "bearer"
+                  expires_in:
+                    type: integer
+                    example: 3600
+
+  /admin/auth/password_restore/email/code:
+    post:
+      description: "Admin send email code"
+      tags:
+        - Admin Restore
+      requestBody:
+        content:
+          applocation/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: "user@gmail.com"
+      responses:
+        202:
+          description: "Success sent restore code to admin email"
+#          content:
+#            application/json:
+
+  /admin/profile:
+    get:
+      summary: "Get profile"
+      tags: 
+        -  Admin Profile
+      responses: 
+        200:
+          $ref: "#/components/responses/AdminProfileResponse"
+          
+    post: 
+      summary: "Update profile"
+      tags: 
+        -  Admin Profile
+      requestBody: 
+        content:
+         application/json:
+          schema: 
+            allOf: 
+              -  type: object
+              -  $ref: "#/components/schemas/BasicFirstNameSchema"
+              -  $ref: "#/components/schemas/BasicLastNameSchema"
+              -  $ref: "#/components/schemas/BasicEmailSchema"
+              -  $ref: "#/components/schemas/BasicUploadAvatarSchema"
+              -  $ref: "#/components/schemas/AdminPositonSchema"
+      responses: 
+        202: 
+          $ref: "#/components/responses/AdminProfileResponse"
+        
+
+  /admin/auth/password_restore/restore:
+    post:
+      description: "Admin restore password"
+      tags:
+        - Admin Restore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email_code
+                - current_password
+                - new_password
+                - new_password_confirmation
+              properties:
+                email_code:
+                  type: integer
+                  example: 248586
+                  minLength: 6
+                  maxLength: 6
+                current_password:
+                  type: string
+                  example: "pas12345"
+                new_password:
+                  type: string
+                  example: "secret"
+                  minLength: 6
+                  maxLength: 20
+                new_password_confirmation:
+                  type: string
+                  example: "secret"
+                  minLength: 6
+                  maxLength: 20
+      responses:
+        202:
+          description: "Success restored password"
+
+  /admin/sliders:
+    get:
+      description: "Get sliders"
+      tags:
+        - Admin Sliders
+      responses:
+        200:
+          description: "Sliders"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SliderSchema'
+
+    post:
+      description: "Create a slider"
+      tags:
+        - Admin Sliders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - media
+              properties:
+                media:
+                  type: string
+                  format: binary
+                title_en:
+                  type: string
+                  example: "En Rabbit in a update."
+                title_ru:
+                  type: string
+                  example: "Ru Rabbit in a update."
+                title_tk:
+                  type: string
+                  example: "Tk Rabbit in a update."
+                text_en:
+                  type: string
+                  example: "En Ipsa non esse et update."
+                text_ru:
+                  type: string
+                  example: "Ru Ipsa non esse et update."
+                text_tk:
+                  type: string
+                  example: "Tk Ipsa non esse et update."
+                is_active:
+                  type: boolean
+                  example: true
+                  enum:
+                    - true
+                    - false
+                  default: true
+                position:
+                  type: integer
+                  example: 1
+                  nullable: true
+                  minimum: 1
+                  maximum: 100
+      responses:
+        201:
+          description: "Created a slider"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/SliderSchema'
+
+  /admin/sliders/{id}:
+    get:
+      description: "Show a slider"
+      tags:
+        - Admin Sliders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 4
+      responses:
+        200:
+          description: "Show a slider"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SliderSchema'
+
+    post:
+      description: "Update a slider"
+      tags:
+        - Admin Sliders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                media:
+                  type: string
+                  format: binary
+                title_en:
+                  type: string
+                  example: "En Rabbit in a update."
+                title_ru:
+                  type: string
+                  example: "Ru Rabbit in a update."
+                title_tk:
+                  type: string
+                  example: "Tk Rabbit in a update."
+                text_en:
+                  type: string
+                  example: "En Ipsa non esse et update."
+                text_ru:
+                  type: string
+                  example: "Ru Ipsa non esse et update."
+                text_tk:
+                  type: string
+                  example: "Tk Ipsa non esse et update."
+                is_active:
+                  type: boolean
+                  example: true
+                  enum:
+                    - true
+                    - false
+                  default: true
+                position:
+                  type: integer
+                  example: 1
+                  nullable: true
+                  minimum: 1
+                  maximum: 100
+      responses:
+        202:
+          description: "Updated a slider"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/SliderSchema'
+
+    delete:
+      description: "Delete a slider"
+      tags:
+        - Admin Sliders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 4
+      responses:
+        204:
+          description: "Deleted a slider"
+
+  /admin/socials:
+    get:
+      description: "Ger socials"
+      tags:
+        - Admin Socials
+      responses:
+        200:
+          description: "Success socials"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    slug:
+                      type: string
+                      example: "instagram"
+                    link:
+                      type: string
+                      example: "https://instagram.com/mesgen-logistics"
+                    is_active:
+                      type: boolean
+                      example: true
+                      enum:
+                        - false
+                        - true
+                    position:
+                      type: integer
+                      example: 2
+                      nullable: true
+                    created_at:
+                      type: string
+                      example: "08-04-2022 12:31:00"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 12:31:00"
+
+  /admin/socials/{id}:
+    get:
+      description: "Show social"
+      tags:
+        - Admin Socials
+      responses:
+        200:
+          description: "Show social"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  slug:
+                    type: string
+                    example: "instagram"
+                  link:
+                    type: string
+                    example: "https://instagram.com/mesgen-logistics"
+                  is_active:
+                    type: boolean
+                    example: true
+                    enum:
+                      - false
+                      - true
+                  position:
+                    type: integer
+                    example: 2
+                    nullable: true
+                  created_at:
+                    type: string
+                    example: "08-04-2022 12:31:00"
+                  updated_at:
+                    type: string
+                    example: "08-04-2022 12:31:00"
+
+    put:
+      description: "Update social"
+      tags:
+        - Admin Socials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 2
+                slug:
+                  type: string
+                  example: "instagram"
+                link:
+                  type: string
+                  example: "https://instagram.com/mesgen-logistics"
+                is_active:
+                  type: boolean
+                  example: true
+                  enum:
+                    - false
+                    - true
+                position:
+                  type: integer
+                  example: 2
+                  nullable: true
+      responses:
+        202:
+          description: "Updated social"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  slug:
+                    type: string
+                    example: "instagram"
+                  link:
+                    type: string
+                    example: "https://instagram.com/mesgen-logistics"
+                  is_active:
+                    type: boolean
+                    example: true
+                    enum:
+                      - false
+                      - true
+                  position:
+                    type: integer
+                    example: 2
+                    nullable: true
+                  created_at:
+                    type: string
+                    example: "08-04-2022 12:31:00"
+                  updated_at:
+                    type: string
+                    example: "08-04-2022 12:31:00"
+
+  /admin/sliders/blocks:
+    get:
+      description: "Get slider blocks"
+      tags:
+        - Admin Slider Blocks
+      responses:
+        200:
+          description: "Success slider blocks"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 3
+                    icon:
+                      type: string
+                      example: "flaticon-transport-3"
+                    title_en:
+                      type: string
+                      example: "En Title"
+                    title_ru:
+                      type: string
+                      example: "Ru Title"
+                    title_tk:
+                      type: string
+                      example: "Tk Title"
+                    text_en:
+                      type: string
+                      example: "En text text text text"
+                    text_ru:
+                      type: string
+                      example: "Ru text text text text"
+                    text_tk:
+                      type: string
+                      example: "Tk text text text text"
+                    position:
+                      type: integer
+                      example: 3
+                      nullable: true
+                    created_at:
+                      type: string
+                      example: "08-04-2022 15:57:13"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 15:57:13"
+
+  /admin/sliders/blocks/{id}:
+    get:
+      description: "Show slider blocks"
+      tags:
+        - Admin Slider Blocks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 3
+      responses:
+        200:
+          description: "Success slider blocks"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  icon:
+                    type: string
+                    example: "flaticon-transport-3"
+                  title_en:
+                    type: string
+                    example: "En Title"
+                  title_ru:
+                    type: string
+                    example: "Ru Title"
+                  title_tk:
+                    type: string
+                    example: "Tk Title"
+                  text_en:
+                    type: string
+                    example: "En text text text text"
+                  text_ru:
+                    type: string
+                    example: "Ru text text text text"
+                  text_tk:
+                    type: string
+                    example: "Tk text text text text"
+                  position:
+                    type: integer
+                    example: 3
+                    nullable: true
+                  created_at:
+                    type: string
+                    example: "08-04-2022 15:57:13"
+                  updated_at:
+                    type: string
+                    example: "08-04-2022 15:57:13"
+    put:
+        description: "Update slider blocks"
+        tags:
+          - Admin Slider Blocks
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+              example: 4
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title_en:
+                    type: string
+                    example: "En Title"
+                  title_ru:
+                    type: string
+                    example: "Ru Title"
+                  title_tk:
+                    type: string
+                    example: "Tk Title"
+                  text_en:
+                    type: string
+                    example: "En text text text text"
+                  text_ru:
+                    type: string
+                    example: "Ru text text text text"
+                  text_tk:
+                    type: string
+                    example: "Tk text text text text"
+                  position:
+                    type: integer
+                    example: 3
+                    nullable: true
+        responses:
+          202:
+            description: "Updated slider blocks"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 4
+                    icon:
+                      type: string
+                      example: "flaticon-transport-3"
+                    title_en:
+                      type: string
+                      example: "En Title"
+                    title_ru:
+                      type: string
+                      example: "Ru Title"
+                    title_tk:
+                      type: string
+                      example: "Tk Title"
+                    text_en:
+                      type: string
+                      example: "En text text text text"
+                    text_ru:
+                      type: string
+                      example: "Ru text text text text"
+                    text_tk:
+                      type: string
+                      example: "Tk text text text text"
+                    position:
+                      type: integer
+                      example: 3
+                      nullable: true
+                    created_at:
+                      type: string
+                      example: "08-04-2022 15:57:13"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 15:57:13"
+
+  /admin/countries:
+    get:
+      summary: "Get Countries"
+      description: "Get Countries"
+      tags:
+        - Admin Countries
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - slug
+                    - title_en
+                    - title_ru
+                    - title_tk
+                  properties:
+                    id:
+                      type: integer
+                      example: 5
+                    slug:
+                      type: string
+                      example: "turkmenistan"
+                      uniqueItems: true
+                    title_en:
+                      type: string
+                      example: "Turkmenistan"
+                    title_ru:
+                      type: string
+                      example: "Туркменистан"
+                    title_tk:
+                      type: string
+                      example: "Turkmenistan"
+                    is_active:
+                      type: boolean
+                      example: true
+                      enum:
+                        - true
+                        - false
+                    position:
+                      type: integer
+                      example: 2
+                      minimum: 1
+                    created_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+
+    post:
+      summary: "Create a country"
+      description: "Create a country"
+      tags:
+        - Admin Countries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - slug
+                - title_en
+                - title_ru
+                - title_tk
+              properties:
+                slug:
+                  type: string
+                  example: "turkmenistan"
+                  uniqueItems: true
+                title_en:
+                  type: string
+                  example: "Turkmenistan"
+                title_ru:
+                  type: string
+                  example: "Туркменистан"
+                title_tk:
+                  type: string
+                  example: "Turkmenistan"
+                is_active:
+                  type: boolean
+                  example: true
+                  enum:
+                    - true
+                    - false
+                position:
+                  type: integer
+                  example: 2
+                  minimum: 1
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 5
+                    slug:
+                      type: string
+                      example: "turkmenistan"
+                    title_en:
+                      type: string
+                      example: "Turkmenistan"
+                    title_ru:
+                      type: string
+                      example: "Туркменистан"
+                    title_tk:
+                      type: string
+                      example: "Turkmenistan"
+                    is_active:
+                      type: boolean
+                      example: true
+                      enum:
+                        - true
+                        - false
+                    position:
+                      type: integer
+                      example: 2
+                      minimum: 1
+                    created_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+
+  /admin/country/{id}:
+    get:
+      summary: "Show a country"
+      tags:
+        - Admin Countries
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 5
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 5
+                    slug:
+                      type: string
+                      example: "turkmenistan"
+                    title_en:
+                      type: string
+                      example: "Turkmenistan"
+                    title_ru:
+                      type: string
+                      example: "Туркменистан"
+                    title_tk:
+                      type: string
+                      example: "Turkmenistan"
+                    is_active:
+                      type: boolean
+                      example: true
+                      enum:
+                        - true
+                        - false
+                    position:
+                      type: integer
+                      example: 2
+                      minimum: 1
+                    created_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+
+    put:
+      summary: "Update a country"
+      tags:
+        - Admin Countries
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  example: "turkmenistan"
+                  uniqueItems: true
+                title_en:
+                  type: string
+                  example: "Turkmenistan"
+                title_ru:
+                  type: string
+                  example: "Туркменистан"
+                title_tk:
+                  type: string
+                  example: "Turkmenistan"
+                is_active:
+                  type: boolean
+                  example: true
+                  enum:
+                    - true
+                    - false
+                position:
+                  type: integer
+                  example: 2
+                  minimum: 1
+      responses:
+        200:
+          description: "Success updated"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 5
+                    slug:
+                      type: string
+                      example: "turkmenistan"
+                    title_en:
+                      type: string
+                      example: "Turkmenistan"
+                    title_ru:
+                      type: string
+                      example: "Туркменистан"
+                    title_tk:
+                      type: string
+                      example: "Turkmenistan"
+                    is_active:
+                      type: boolean
+                      example: true
+                      enum:
+                        - true
+                        - false
+                    position:
+                      type: integer
+                      example: 2
+                      minimum: 1
+                    created_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+                    updated_at:
+                      type: string
+                      example: "08-04-2022 22:10:11"
+
+    delete:
+      summary: "Delete a country"
+      tags:
+        - Admin Countries
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 5
+      responses:
+        204:
+          description: "Success deleted"
+
+  /admin/countries/{country_id}/addersses:
+    get:
+      summary: "Get addresses"
+      tags:
+        - Admin Address
+      parameters:
+        - name: country_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAddressSchema'
+
+    post:
+      summary: "Create an address"
+      tags:
+        - Admin Address
+      parameters:
+        - name: country_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - address_en
+                - address_ru
+                - address_tk
+              properties:
+                address_en:
+                  type: string
+                  example: "EN adaen"
+                address_ru:
+                  type: string
+                  example: "RU adaen"
+                address_tk:
+                  type: string
+                  example: "TK adaenEN"
+                position:
+                  type: integer
+                  example: 1
+                  default: null
+                is_active:
+                  type: boolean
+                  example: false
+                  default: true
+                  enum:
+                    - true
+                    - false
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAddressSchema'
+
+  /admin/countries/{country_id}/addresses/{address_id}:
+    get:
+      summary: "Show address"
+      tags:
+        - Admin Address
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/AddressParam'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminAddressSchema'
+
+    put:
+      summary: "Update address"
+      tags:
+        - Admin Address
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/AddressParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address_en:
+                  type: string
+                  example: "EN Updated"
+                address_ru:
+                  type: string
+                  example: "RU Updated"
+                address_tk:
+                  type: string
+                  example: "Tk Updated"
+                position:
+                  type: integer
+                  example: 2
+                  minimum: 1
+                  default: null
+                is_active:
+                  type: boolean
+                  example: false
+                  enum:
+                    - true
+                    - false
+
+      responses:
+        202:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminAddressSchema'
+
+    delete:
+      summary: "Delete address"
+      tags:
+        - Admin Address
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/AddressParam'
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+
+  /admin/countries/{country_id}/phones:
+    get:
+      summary: "Get phones"
+      tags:
+        - Admin Phones
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPhoneSchema'
+
+    post:
+      summary: "Create a phone"
+      tags:
+        - Admin Phones
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title_en
+                - title_ru
+                - title_tk
+                - value
+                - country_id
+              properties:
+                title_en:
+                  type: string
+                  example: "EN adaen"
+                title_ru:
+                  type: string
+                  example: "RU adaen"
+                title_tk:
+                  type: string
+                  example: "TK adaenEN"
+                value:
+                  type: string
+                  example: "+24098345"
+                country_id:
+                  type: integer
+                  example: 3
+                position:
+                  type: integer
+                  example: 1
+                  default: null
+                is_active:
+                  type: boolean
+                  example: false
+                  enum:
+                    - true
+                    - false
+                  default: true
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPhoneSchema'
+
+  /admin/countries/{country_id}/phones/{phone_id}:
+    get:
+      summary: "Show a phone"
+      tags:
+        - Admin Phones
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/PhoneParam'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPhoneSchema'
+
+    put:
+      summary: "Update a phone"
+      tags:
+        - Admin Phones
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/PhoneParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title_en:
+                  type: string
+                  example: "EN adaen update"
+                title_ru:
+                  type: string
+                  example: "RU adaen update"
+                title_tk:
+                  type: string
+                  example: "TK adaen  update"
+                value:
+                  type: string
+                  example: "+240983450003040"
+                country_id:
+                  type: integer
+                  example: 3
+                position:
+                  type: integer
+                  example: 1
+                is_active:
+                  type: boolean
+                  example: false
+                  enum:
+                    - true
+                    - false
+      responses:
+        202:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPhoneSchema'
+
+    delete:
+      summary: "Delete a phone"
+      tags:
+        - Admin Phones
+      parameters:
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/PhoneParam'
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+
+  /admin/abouts/company:
+    get:
+      summary: "Get Admin About Companies"
+      tags:
+        - Admin About Company
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutsCompanyResponse'
+
+  /admmin/abouts/company/{company_id}:
+    get:
+      summary: "Show Admin About Company"
+      tags:
+        - Admin About Company
+      parameters:
+        - $ref: '#/components/parameters/CompanyIdParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutCompanyResponse'
+
+    post:
+      summary: "Update Admin About Company"
+      tags:
+        - Admin About Company
+      parameters:
+        - $ref: '#/components/parameters/CompanyIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateAboutCompanyRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutCompanyResponse'
+
+  /admin/partners:
+    get:
+      summary: "Get Partners"
+      tags:
+        - Admin Partners
+      security:
+        - bearerToken: []
+      responses:
+        200:
+          $ref: '#/components/responses/AdminPartnersResponse'
+
+    post:
+      summary: "Create Partner"
+      tags:
+        - Admin Partners
+      security:
+        - bearerToken: []
+      requestBody:
+        $ref: '#/components/requestBodies/AdminCreatePartnerRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminPartnerResponse'
+
+  /admin/partners/{partner_id}:
+    get:
+      summary: "Show Partner"
+      tags:
+        - Admin Partners
+      parameters:
+        - $ref: '#/components/parameters/PartnerIdParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminPartnerResponse'
+
+    post:
+      summary: "Update Partner"
+      tags:
+        - Admin Partners
+      parameters:
+        - $ref: '#/components/parameters/PartnerIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminCreatePartnerRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminPartnerResponse'
+
+    delete:
+      summary: "Delete Partners"
+      tags:
+        - Admin Partners
+      parameters:
+        - $ref: '#/components/parameters/PartnerIdParam'
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+
+  /admin/blogs:
+    get:
+      summary: "Get Blogs"
+      tags:
+        - Admin Blogs
+      security:
+        - bearerToken: []
+      parameters:
+        - $ref: '#/components/parameters/perPageParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminBlogPaginateResponse'
+          
+    post:
+      summary: "Create Blog"
+      tags:
+        - Admin Blogs
+      security:
+        - bearerToken: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - title_en
+                - title_ru
+                - title_tk
+                - text_en
+                - text_ru
+                - text_tk
+                - media
+                - category_id
+                - user_id
+              allOf:
+                - type: object
+                - $ref: "#/components/schemas/AdminTitleSchema"
+                - $ref: "#/components/schemas/AdminTextSchema"
+                - $ref: "#/components/schemas/BasicUploadMediaSchema"
+                - $ref: "#/components/schemas/BasicIsActiveSchema"
+                - properties:
+                    category_id:
+                      type: integer
+                      example: 3
+                    user_id:
+                      type: integer
+                      example: 1
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                        example: "#test"
+                        enum:
+                          - "#test"
+                          - "#programmig"
+      responses:
+        200:
+          $ref: '#/components/responses/AdminBlogShowResponse'
+                                         
+          
+  /admin/blogs/{blog_id}:
+    get:
+      summary: "Show blog"
+      tags:
+        - Admin Blogs
+      security:
+        - bearerToken: []
+      parameters:
+        - name: blog_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            example: 10
+      responses:
+        200:
+          $ref: '#/components/responses/AdminBlogShowResponse'
+
+          post:
+            summary: "Create Blog"
+            tags:
+              - Admin Blogs
+            security:
+              - bearerToken: []
+            requestBody:
+              content:
+                multipart/form-data:
+                  schema:
+                    required:
+                      - title_en
+                      - title_ru
+                      - title_tk
+                      - text_en
+                      - text_ru
+                      - text_tk
+                      - media
+                      - category_id
+                      - user_id
+                    allOf:
+                      - type: object
+                      - $ref: "#/components/schemas/AdminTitleSchema"
+                      - $ref: "#/components/schemas/AdminTextSchema"
+                      - $ref: "#/components/schemas/BasicUploadMediaSchema"
+                      - $ref: "#/components/schemas/BasicIsActiveSchema"
+                      - properties:
+                          category_id:
+                            type: integer
+                            example: 3
+                          user_id:
+                            type: integer
+                            example: 1
+                          tags:
+                            type: array
+                            items:
+                              type: string
+                              example: "#test"
+                              enum:
+                                - "#test"
+                                - "#programmig"
+            responses:
+              200:
+                $ref: '#/components/responses/AdminBlogShowResponse'
+    post:
+      summary: "Update Blog"
+      tags:
+        - Admin Blogs
+      security:
+        - bearerToken: []
+      parameters:
+        - name: blog_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - type: object
+                - $ref: "#/components/schemas/AdminTitleSchema"
+                - $ref: "#/components/schemas/AdminTextSchema"
+                - $ref: "#/components/schemas/BasicUploadMediaSchema"
+                - $ref: "#/components/schemas/BasicIsActiveSchema"
+                - properties:
+                    category_id:
+                      type: integer
+                      example: 3
+                    user_id:
+                      type: integer
+                      example: 1
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                        example: "#test"
+                        enum:
+                          - "#test"
+                          - "#programmig"
+      responses:
+        200:
+          $ref: '#/components/responses/AdminBlogShowResponse'
+    
+          /admin/blogs/{blog_id}:
+            get:
+              summary: "Show blog"
+              tags:
+                - Admin Blogs
+              security:
+                - bearerToken: []
+              parameters:
+                - name: blog_id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    example: 1
+                - name: per_page
+                  in: query
+                  schema:
+                    type: integer
+                    example: 10
+              
+    delete:
+      summary: "Delete Blog"
+      tags:
+        - Admin Blogs
+      security:
+        - bearerToken: []
+      
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+
+  /admin/abouts/steps:
+    get:
+      summary: "Get abaut steps"
+      tags:
+        -  Admin About Steps
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutsStepsResponse'
+          
+  /admin/abouts/steps/{step_id}:
+    get:
+      summary: "Show about step"
+      tags:
+        -  Admin About Steps
+      parameters:
+        - name: step_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutsStepResponse'
+
+    put:
+      summary: "Update about step"
+      tags:
+        -  Admin About Steps
+      parameters:
+        - name: step_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        $ref: '#/components/requestBodies/AdminAboutStepRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutsStepResponse'
+
+  /admin/services:
+    get:
+      summary: "Get Servies"
+      tags:
+        - Admin Services
+      responses:
+        200:
+          $ref: '#/components/responses/AdimnServicesResponse'
+
+    post:
+      summary: "Create Service"
+      tags:
+        - Admin Services
+      requestBody:
+        $ref: '#/components/requestBodies/AdminCreateServiceRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdimnServiceResponse'
+
+  /admin/services/{service_id}:
+    get:
+      summary: "Show sevice"
+      tags:
+        - "Admin Services"
+      parameters:
+        - $ref: '#/components/parameters/ServiceParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdimnServiceResponse'
+
+    post:
+      summary: "Update service"
+      tags:
+        - Admin Services
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateServiceRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdimnServiceResponse'
+
+    delete:
+      summary: "Delete service"
+      tags:
+        - Admin Services
+      parameters:
+        - $ref: '#/components/parameters/ServiceParam'
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+        
+  /admin/steps:
+    get:
+      summary: "Get steps"
+      tags:
+        -  Admin Steps
+      responses:
+        200:
+          $ref: '#/components/responses/AdminStepsResponse'
+          
+  /admin/steps/{step_id}:
+    get:
+      summary: "Show steps"
+      tags:
+        -  Admin Steps
+      parameters:
+        - $ref: '#/components/parameters/StepParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminStepsResponse'
+
+    put:
+      summary: "Update steps"
+      tags:
+        - Admin Steps
+      parameters:
+        - $ref: '#/components/parameters/StepParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateStepRquest'              
+      responses:
+        200:
+          $ref: '#/components/responses/AdminStepResponse'
+
+  /admin/users:
+    get:
+      summary: "Get Users"
+      tags:
+        - Admin Users
+      parameters:
+        - $ref: "#/components/parameters/perPageParam"
+      responses:
+        200:
+          $ref: "#/components/responses/AdminUsersResponse"
+    
+    post:
+      summary: "Create User"
+      tags:
+        - Admin Users
+      requestBody:
+        $ref: '#/components/requestBodies/AdminCreateUserRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminUserResponse'
+
+  /admin/users/{user_id}:
+    get:
+      summary: "Show User"
+      tags:
+        - Admin Users
+      parameters:
+        - $ref: '#/components/parameters/UserParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateUserRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminUserResponse'
+
+    post:
+      summary: "Update User"
+      tags:
+        - Admin Users
+      parameters:
+        - $ref: '#/components/parameters/UserParam'
+      requestBody:
+        - $ref: 'Admin'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminUserResponse'
+          
+    delete:
+      summary: "Delete User"
+      tags:
+        - Admin Users
+      parameters:
+        - $ref: "#/components/parameters/UserParam"
+      responses:
+        204:
+          $ref: "#/components/responses/NoContentResponse"
+        
+  /admin/processes:
+    get:
+      summary: "Get Processes"
+      tags:
+        - Admin Processes
+      responses:
+        200:
+          $ref: "#/components/responses/AdminProcessesResponse"
+
+  /admin/processes/{process_id}:
+    get:
+      summary: "Show Process"
+      tags:
+        -  Admin Processes
+      parameters:
+        - $ref: "#/components/parameters/ProcessParam"
+      responses:
+        200:
+          $ref: "#/components/responses/AdminProcessResponse"
+      
+    put:
+      summary: "Update Process"
+      tags:
+        - Admin Processes
+      parameters:
+        - $ref: "#/components/parameters/ProcessParam"
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateProcessRquest'
+      responses:
+        200:
+          $ref: "#/components/responses/AdminProcessResponse"
+
+  /admin/chooses:
+    get:
+      summary: "Get Chooses"
+      tags:
+        - Admin Chooses
+      responses:
+        200:
+          $ref: "#/components/responses/AdminChoosesResponse"
+
+  /admin/chooses/{choose_id}:
+    get:
+      summary: "Show Chooses"
+      tags:
+        - Admin Chooses
+      parameters:
+        - $ref: "#/components/parameters/ChooseParam"
+      responses:
+        200:
+          $ref: "#/components/responses/AdminChooseResponse"
+    
+    put:
+      summary: "Update Chooses"
+      tags:
+        - Admin Chooses
+      parameters:
+        - $ref: "#/components/parameters/ChooseParam"
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateChoosesRquest'
+      responses:
+        200:
+          $ref: "#/components/responses/AdminChooseResponse"
+
+  /admin/work_hours:
+    get:
+      summary: "Get Work hours"
+      tags:
+        - Admin Work hours
+      responses:
+        200:
+          $ref: "#/components/responses/AdminWorkWoursResponse"
+          
+  /admin/work_hours/{work_hour_id}:
+    get:
+      summary: "Show Work hour"
+      tags:
+        - Admin Work hours
+      parameters:
+        - $ref: '#/components/parameters/WorkHourParam' 
+      responses:
+        200:
+          $ref: "#/components/responses/AdminWorkWoursResponse"
+
+    put:
+      summary: "Update Work hour"
+      tags:
+        - Admin Work hours
+      parameters:
+        - $ref: '#/components/parameters/WorkHourParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateWorkHourRequest'
+      responses:
+        200:
+          $ref: "#/components/responses/AdminWorkWoursResponse"
+
+  /admin/text_translate:
+    get:
+      summary: "Get Text Translates"
+      tags:
+        - Admin Text Translates
+      parameters:
+        - $ref: '#/components/parameters/SlugParam'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminTextTranslatesResponse'
+          
+    # post:
+    #   summary: "Create Text Translate"
+    #   tags:
+    #     - Admin Text Translates
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/AdminCreateTextTranslateRequest'
+    #   responses:
+    #     200:
+    #       $ref: '#/components/responses/AdminTextTranslateResponse'
+
+  /admin/text_translate/{text_translate_id}:
+    # get:
+    #   summary: "Show Text Translate"
+    #   tags:
+    #     -  Admin Text Translates
+    #   parameters:
+    #     - $ref: '#/components/parameters/TextTranslateParam'
+    #   responses:
+    #     200:
+    #       $ref: '#/components/responses/AdminTextTranslatesResponse'
+      
+    put:
+      summary: "Update Text Translate"
+      tags:
+        -  Admin Text Translates
+      parameters:
+        - $ref: '#/components/parameters/TextTranslateParam'
+      requestBody:
+        $ref: '#/components/requestBodies/AdminUpdateTextTranslateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/AdminTextTranslatesResponse'
+          
+    # delete:
+    #   summary: "Delete Text Translate"
+    #   tags:
+    #     -  Admin Text Translates
+    #   parameters:
+    #     - $ref: '#/components/parameters/TextTranslateParam'
+    #   responses:
+    #     204:
+    #       $ref: '#/components/responses/NoContentResponse'
+        
+
+  /sliders:
+    get:
+      summary: "Get sliders"
+      description: "Get sliders"
+      tags:
+        - Client
+      responses:
+        200:
+          description: "Success full"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    media:
+                      type: string
+                      example: "http://127.0.0.1:8082/storage/slider/medias/0qNQC5yG91KJ35bocCxkxg1IQvjD7JTo.jpg"
+                    title:
+                      type: string
+                      example: "En Rabbit in a update."
+                    text:
+                      type: string
+                      example: "En Ipsa non esse et update."
+                    extension:
+                      type: string
+                      example: "jpg"
+                      enum:
+                        - "jpg"
+                        - "jpeg"
+                        - "png"
+                        - "gif"
+
+  /socials:
+    get:
+      summary: "Get socials"
+      description: "Socials"
+      tags:
+        - Client
+      responses:
+        200:
+          description: "Success full socials"
+          content:
+            applicatin/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    slug:
+                      type: string
+                      example: "facebook"
+                    link:
+                      type: string
+                      example: "https://facebook.com/mesgen-logistics"
+
+  /slider/blocks:
+    get:
+      summary: "Get slider blocks"
+      description: "Slider blocks"
+      tags:
+        - Client
+      responses:
+        200:
+          description: "Success get slider blocks"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    icon:
+                      type: string
+                      example: "flaticon-transport-3"
+                    title:
+                      type: string
+                      example: "Tk Title"
+                    text:
+                      type: string
+                      example: "Tk text text text text"
+
+  /countries:
+    get:
+      summary: "Get countries"
+      tags:
+        - Client
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - slug
+                    - title_en
+                    - title_ru
+                    - title_tk
+                  properties:
+                    id:
+                      type: integer
+                      example: 5
+                    slug:
+                      type: string
+                      example: "turkmenistan"
+                      uniqueItems: true
+                    title:
+                      type: string
+                      example: "Turkmenistan"
+
+  /countries/{country_id}/addresses:
+    get:
+      summary: "Get country addresses"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: '#/components/responses/GetClientAddressesResponse'
+
+  /countries/{country_id}/phones:
+    get:
+      summary: "Get country phones"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: '#/components/responses/GetClientPhonesResponse'
+
+  /emails:
+    get:
+      summary: "Get emails"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: '#/components/responses/ClientEmailsRespose'
+
+  /abouts/company:
+    get:
+      summary: "Get about company"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: '#/components/responses/AdminAboutCompanyResponse'
+
+  /partners:
+    get:
+      summary: "Get partners"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: '#/components/responses/ClientPartnersResponse'
+
+  /contact:
+    post:
+      summary: "Send message"
+      tags:
+        - Client
+      requestBody:
+        content:
+          applocation/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - country_id
+                - message
+              properties:
+                name:
+                  type: string
+                  example: "Vasya Pupkin"
+                email:
+                  type: sgring
+                  example: "client@gmail.com"
+                country_id:
+                  type: integer
+                  example: 1
+                message:
+                  type: string
+                  example: "Message Hi I'm want to send the message."
+                phone:
+                  type: string
+                  example: "+38066123456789"
+      responses:
+       202:
+        description: "Successfull"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Ваше сообщение успешно отправлено. Наш менеджер свяжется с вами в ближайшее время."
+                  enum:
+                    - Your message successfull sent. Our manager will contact you shortly.
+                    - Ваше сообщение успешно отправлено. Наш менеджер свяжется с вами в ближайшее время.
+                    - Habaryňyz üstünlikli iberildi Dolandyryjymyz gysga wagtda siziň bilen habarlaşar.
+
+  /blog_categories:
+    get:
+      summary: "Get blog categories"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientBlogCategoryResponse"
+                    
+  /hastags:
+    get:
+      summary: "Get hashTags"
+      tags:
+        -  Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientHashtagsResponse"
+
+  /hastags/{hastag_id}/blogs:
+    get:
+      summary: "Get blogs by hashtag id"
+      tags:
+        -  Client
+      parameters:
+        - $ref: '#/components/parameters/perPageParam'
+        - $ref: '#/components/parameters/HashtagIdParam'
+      responses:
+        200:
+          $ref: "#/components/responses/ClientBlogsPaginateResponse"
+
+  /blogs:
+    get:
+      summary: "Get blogs"
+      tags:
+        -  Client
+      parameters:
+        - $ref: '#/components/parameters/perPageParam'
+      responses:
+        200:
+          $ref: "#/components/responses/ClientBlogsPaginateResponse"
+          
+  /blogs/{blog_id}:
+    get:
+      summary: "Show blog"
+      tags:
+        -  Client
+      parameters:
+        - name: blog_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses: 
+       200:
+         $ref: "#/components/responses/ClientBlogShowResponse"
+
+  /blog_categories/{blog_category_id}/blogs:
+    get:
+      summary: "Get blogs by blog category id"
+      tags:
+        -  Client
+      parameters:
+        - $ref: '#/components/parameters/perPageParam'
+        - $ref: '#/components/parameters/BlogCategoryIdParam'
+      responses:
+        200:
+          $ref: '#/components/responses/ClientBlogsPaginateResponse'
+
+  /blogs/popular:
+    get:
+      summary: "Get popular blogs"
+      tags:
+        - Client
+      parameters:
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        200:
+          $ref: '#/components/responses/ClientBlogsPopularResponse'
+
+  /blogs/search:
+    get:
+      summary: "Search blogs"
+      tags:
+        - Client
+      parameters:
+        - $ref: '#/components/parameters/searchParam'
+        - $ref: '#/components/parameters/perPageParam'
+      responses:
+        200:
+          $ref: '#/components/responses/ClientBlogsPaginateResponse'
+          
+  /team:
+    get:
+      summary: "Get team"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientTeamResponse"
+  
+  /abouts/steps:
+    get:
+      summary: "Get abouts steps"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientBlogStepsResponse"
+
+  /services:
+    get:
+      summary: "Get services"
+      tags:
+        - Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientServiceRespose"
+
+  /services/{service_id}:
+    get:
+      summary: "Show service"
+      tags:
+        - Client
+      parameters:
+        - $ref: "#/components/parameters/ServiceParam"
+      responses:
+        200:
+          $ref: "#/components/responses/ClientServiceRespose"
+
+  /steps:
+    get:
+      summary: "Get steps"
+      tags:
+        -  Client
+      responses:
+        200:
+          $ref: "#/components/responses/ClientStepResponse"
+
+  /processes:
+    get:
+      summary: "Get Processes"
+      tags:
+        -  Client
+      responses:
+        200:
+          $ref: '#/components/responses/ClientProcessesResponse'
+          
+  /chooses:
+    get:
+      summary: "Get Chooses"
+      tags:
+        -  Client
+      responses:
+        200:
+          $ref: '#/components/responses/ClientChoosesResponse'
+
+  /work_hours/{country_id}:
+      get:
+        summary: "Get Work Hours"
+        tags:
+          -  Client
+        parameters:
+          - $ref: "#/components/parameters/CountryParam"
+        responses:
+          200:
+            $ref: '#/components/responses/ClientWorkHourResponse'
+
+  /text_translates:
+    get:
+      summary: "Get Text Translates"
+      tags:
+        - Client
+      parameters:
+        - $ref: '#/components/parameters/SlugParam'
+      responses:
+        200:
+          $ref: '#/components/responses/ClientTextTranslatesResponse'
+
+components:
+  schemas:
+    #region Basic Types
+    BasicIdSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+
+    BasicTitleSchema:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Title example"
+          uniqueItems: true
+          
+    BasicTextSchema:
+      type: object
+      properties:
+        text:
+          type: string
+          example: "Text example Text example Text example Text example Text example Text example"
+
+    BasicUploadMediaSchema:
+      type: object
+      properties:
+        media:
+          type: string
+          format: binary
+          example: "file"
+          enum:
+            - jpg
+            - jpeg
+            - png
+            - gif
+    
+    BasicUploadAvatarSchema:
+      type: object
+      properties:
+        avatar:
+          type: string
+          format: binary
+          example: "file"
+          enum:
+            - jpg
+            - jpeg
+            - png
+            - gif
+
+    BasicMediaSchema:
+      type: object
+      properties:
+        media:
+          type: string
+          example: "http://127.0.0.1:8082/storage/abouts/company/medias/GOT1k0NTIc2qwPL8x1CaPy2lNjoo473m.jpg"
+
+    BasicExtensionSchema:
+      type: object
+      properties:
+        extension:
+          type: string
+          example: "jpg"
+          enum:
+            - jpg
+            - jpeg
+            - png
+            - gif
+
+    BasicMediaWithExtensionSchema:
+      allOf:
+        - $ref: '#/components/schemas/BasicMediaSchema'
+        - $ref: '#/components/schemas/BasicExtensionSchema'
+
+    BasicPositionSchema:
+      type: object
+      properties:
+        position:
+          type: integer
+          example: 1
+          nullable: true
+
+    BasicIsActiveSchema:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+          example: true
+
+    BasicCreatedAtSchema:
+      type: object
+      properties:
+        created_at:
+          type: string
+          example: "17-04-2022 15:40:14"
+
+    BasicUpdatedAtSchema:
+      type: object
+      properties:
+        updated_at:
+          type: string
+          example: "17-04-2022 15:40:14"
+
+    BasicCreatedAtAndUpdatedAtSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicCreatedAtSchema'
+        - $ref: '#/components/schemas/BasicUpdatedAtSchema'
+
+    BasicLinkSchema:
+      type: object
+      properties:
+        link:
+          type: string
+          example: "http://instagram.com/testUser"
+          nullable: true
+          uniqueItems: true
+          
+    BasicSlugSchema:
+      type: object
+      properties:
+        slug:
+          type: string
+          example: "facebook"
+          nullable: true
+          uniqueItems: true
+
+    BasicEmailSchema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "email@gmail.com"
+          uniqueItems: true
+    
+    BasicFirstNameSchema:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: "Alex"
+    
+    BasicLastNameSchema:
+      type: object
+      properties:
+        last_name:
+          type: string
+          example: "Petrov"
+
+    BasicAvatarSchema:
+      type: object
+      properties:
+        avatar:
+          type: string
+          example: "http://127.0.0.1:8082/storage/blogs/medias/5x4KyUGHMO7MdS25dVgtVhGqNfzZoGgC.jpg"
+    
+    BasicHashtagSchema:
+      type: object
+      properties:
+        value:
+          type: string
+          example: "#testHashtag"
+          uniqueItems: true
+    
+    BasicPaginateLinksSchema:
+      type: array
+      items:
+        type: object
+        properties:
+          url:
+            type: string
+            example: "http://127.0.0.1:8082/api/blogs?page=3"
+            nullable: true
+          label:
+            type: string
+            example: "&laquo; Öňki"
+          active:
+            type: boolean
+            example: true
+            enum:
+              - true
+              - false
+
+    BasicPaginatorSchema:
+      type: object
+      properties:
+        currtent_page:
+          type: integer
+          example: 2
+        data:
+          type: array
+          example: []
+        first_page_url:
+          type: string
+          example: "http://127.0.0.1:8082/api/blogs?page=2"
+          nullable: true
+        from:
+          type: integer
+          example: 1
+        last_page:
+          type: integer
+          example: 5
+        last_page_url:
+          type: string
+          example: "http://127.0.0.1:8082/api/blogs?page=5"
+          nullable: true
+        links:
+          $ref: "#/components/schemas/BasicPaginateLinksSchema"
+          # $ref: "modules/components/schemas/paginate/BasicPaginateLinksSchema.yml"
+        next_page_url:
+          type: string
+          example: "http://127.0.0.1:8082/api/blogs?page=3"
+          nullable: true
+        path:
+          type: string
+          example: "http://127.0.0.1:8082/api/blogs"
+        per_page:
+          type: integer
+          example: 10
+          default: 15
+        prev_page_url:
+          type: string
+          example: "http://127.0.0.1:8082/api/blogs?page=1"
+          nullable: true
+        to:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 72
+    
+    BasicCharSchema:
+      type: object
+      properties:
+        char:
+          type: string
+          example: 'T'
+
+    BasicIconSchema:
+      type: object
+      properties:
+        icon:
+          type: string
+          example: 'cat'
+    
+    BasicIsAdminSchema:
+      type: object
+      properties:
+        is_admin:
+          type: integer
+          example: true
+          enum:
+            - true
+            - false
+
+    BasicFromSchema:
+      type: object
+      properties:
+        from:
+          type: string
+          example: "09:00"
+
+    BasicToSchema:
+      type: object
+      properties:
+        to:
+          type: string
+          example: "18:00"
+        
+    #endregion
+
+    #region Admin
+    AdminTitleSchema:
+      type: object
+      properties:
+        title_en:
+          type: string
+          example: "EN Test title title"
+          uniqueItems: true
+        title_ru:
+          type: string
+          example: "RU Test title title"
+          uniqueItems: true
+        title_tk:
+          type: string
+          example: "TK Test title title"
+          uniqueItems: true
+
+    AdminTextSchema:
+      type: object
+      properties:
+        text_en:
+          type: string
+          example: "EN Test text text text text text text text"
+        text_ru:
+          type: string
+          example: "RU Test text text text text text text text"
+        text_tk:
+          type: string
+          example: "TK Test text text text text text text text"
+
+    AdminPositonSchema:
+      type: object
+      properties:
+        position_en:
+          type: string
+          example: "En Front-end"
+        position_ru:
+          type: string
+          example: "Ru Front-end"
+        position_tk:
+          type: string
+          example: "Tk Front-end"
+
+    AdminAddressSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        address_en:
+          type: string
+          example: "En 511 Aurelio Stravenue Suite 830"
+        address_ru:
+          type: string
+          example: "Ru 511 Aurelio Stravenue Suite 830"
+        address_tk:
+          type: string
+          example: "TK 511 Aurelio Stravenue Suite 830"
+        country_id:
+          type: integer
+          example: 2
+        position:
+          type: integer
+          example: 1
+          nullable: true
+        is_active:
+          type: boolean
+          example: true
+          enum:
+            - true
+            - false
+        created_at:
+          type: string
+          example: "08-04-2022 23:09:57"
+        updated_at:
+          type: string
+          example: "08-04-2022 23:09:57"
+
+    AdminPhoneSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        title_en:
+          type: string
+          example: "En 511 Aurelio Stravenue Suite 830"
+        title_ru:
+          type: string
+          example: "Ru 511 Aurelio Stravenue Suite 830"
+        title_tk:
+          type: string
+          example: "TK 511 Aurelio Stravenue Suite 830"
+        value:
+          type: string
+          example: "+13806744362"
+        country_id:
+          type: integer
+          example: 2
+        position:
+          type: integer
+          example: 1
+          nullable: true
+        is_active:
+          type: boolean
+          example: true
+          enum:
+            - true
+            - false
+        created_at:
+          type: string
+          example: "08-04-2022 23:09:57"
+        updated_at:
+          type: string
+          example: "08-04-2022 23:09:57"
+    
+    AdminUserSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/BasicFirstNameSchema'
+        - $ref: '#/components/schemas/BasicLastNameSchema'
+        - $ref: '#/components/schemas/BasicAvatarSchema'
+        - $ref: '#/components/schemas/BasicEmailSchema'
+        - $ref: '#/components/schemas/BasicIsAdminSchema'
+        - $ref: '#/components/schemas/AdminPositonSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicPositionSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'    
+
+    AdminAboutCompanySchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/AdminTitleSchema'
+        - $ref: '#/components/schemas/AdminTextSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicPositionSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminPartnerSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/AdminTitleSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicLinkSchema'
+        - $ref: '#/components/schemas/BasicPositionSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminBlogCategorySchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/AdminTitleSchema"
+        - $ref: "#/components/schemas/BasicIsActiveSchema"
+        - $ref: "#/components/schemas/BasicCreatedAtAndUpdatedAtSchema"
+
+    AdminHashtagSchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/BasicHashtagSchema"
+        - properties:
+            user_id:
+              type: integer
+              example: 6
+        - $ref: "#/components/schemas/BasicIsActiveSchema"
+        - $ref: "#/components/schemas/BasicCreatedAtAndUpdatedAtSchema"
+    
+    AdminBlogSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/AdminTitleSchema'
+        - $ref: '#/components/schemas/AdminTextSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+        - properties:
+            user:
+              type: object
+              $ref: "#/components/schemas/AdminUserSchema"
+            category:
+              type: object
+              $ref: "#/components/schemas/AdminBlogCategorySchema"
+            tags:
+              type: array
+              items:
+                $ref: '#/components/schemas/AdminHashtagSchema'
+    
+    AdminCharSchema:
+      type: object
+      properties:
+        char_en:
+          type: string
+          example: 'E'
+        char_ru:
+          type: string
+          example: 'R'
+        char_tk:
+          type: string
+          example: 'T'
+    
+    AdminAboutStepSchema:
+      allOf:
+      - type: object
+      - $ref: '#/components/schemas/BasicIdSchema'
+      - $ref: '#/components/schemas/AdminCharSchema'
+      - $ref: '#/components/schemas/AdminTitleSchema'
+      - $ref: '#/components/schemas/AdminTextSchema'
+      - $ref: '#/components/schemas/BasicPositionSchema'
+      - $ref: '#/components/schemas/BasicIsActiveSchema'
+      - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminServiceSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/AdminTitleSchema'
+        - $ref: '#/components/schemas/AdminTextSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicPositionSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+    
+    AdminStepSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/AdminTextSchema'
+        -  $ref: '#/components/schemas/BasicPositionSchema'
+        -  $ref: '#/components/schemas/BasicIsActiveSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+    
+    AdminProcessSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/AdminTextSchema'
+        -  $ref: '#/components/schemas/BasicPositionSchema'
+        -  $ref: '#/components/schemas/BasicIsActiveSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminChooseSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/AdminTextSchema'
+        -  $ref: '#/components/schemas/BasicPositionSchema'
+        -  $ref: '#/components/schemas/BasicIsActiveSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminWorkHour:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/BasicFromSchema'
+        -  $ref: '#/components/schemas/BasicToSchema'
+        -  $ref: '#/components/schemas/BasicPositionSchema'
+        -  $ref: '#/components/schemas/BasicIsActiveSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminTextTranslateSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicSlugSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/AdminTextSchema'
+        -  $ref: '#/components/schemas/BasicPositionSchema'
+        -  $ref: '#/components/schemas/BasicIsActiveSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+        
+    AdminProfileSchema:
+      allOf: 
+        -  type: object
+        -  $ref: "#/components/schemas/BasicIdSchema"
+        -  $ref: "#/components/schemas/BasicFirstNameSchema"
+        -  $ref: "#/components/schemas/BasicLastNameSchema"
+        -  $ref: "#/components/schemas/BasicAvatarSchema"
+        -  $ref: "#/components/schemas/BasicEmailSchema"
+        -  $ref: "#/components/schemas/BasicIsAdminSchema"
+        -  $ref: "#/components/schemas/AdminPositonSchema"
+        -  $ref: "#/components/schemas/BasicIsActiveSchema"
+        -  $ref: "#/components/schemas/BasicPositionSchema"
+        -  $ref: "#/components/schemas/BasicCreatedAtAndUpdatedAtSchema"
+    #endregion
+
+    #region Client
+    SliderSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        media:
+          type: string
+          example: "/storage/slider/medias/VvMB5CTPil36941IMTgNF875346XeHxP.jpg"
+        title_en:
+          type: string
+          example: "En Rabbit in a update."
+        title_ru:
+          type: string
+          example: "Ru Rabbit in a update."
+        title_tk:
+          type: string
+          example: "Tk Rabbit in a update."
+        text_en:
+          type: string
+          example: "En Ipsa non esse et update."
+        text_ru:
+          type: string
+          example: "Ru Ipsa non esse et update."
+        text_tk:
+          type: string
+          example: "Tk Ipsa non esse et update."
+        is_active:
+          type: boolean
+          example: true
+          enum:
+            - true
+            - false
+        position:
+          type: integer
+          example: 2
+          minimum: 1
+          maximum: 100
+          nullable: true
+        created_at:
+          type: string
+          example: "05-04-2022 21:06:47"
+        updated_at:
+          type: string
+          example: "05-04-2022 21:06:47"
+
+    ClientAddressSchema:
+      type: object
+      properties:
+        country_id:
+          type: integer
+          example: 2
+        address:
+          type: string
+          example: "248 Krajcik Terrace Suite 276"
+
+    ClientEmailSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/BasicEmailSchema'
+
+    ClientPhoneSchema:
+      type: object
+      properties:
+        country_id:
+          type: integer
+          example: 2
+        title:
+          type: string
+          example: "RU 63041 Katlyn Loop Suite 222\nKingbury, WV 43825-1957"
+        value:
+          type: string
+          example: "+1-754-482-3643"
+
+    ClientAboutCompanySchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/AdminTitleSchema'
+        - $ref: '#/components/schemas/AdminTextSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicPositionSchema'
+        - $ref: '#/components/schemas/BasicIsActiveSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    # ClientAddressSchema:
+    #   allOf:
+    #     - type: object
+    #     - $ref: '#/components/schemas/BasicIdSchema'
+    #     - $ref: '#/components/schemas/AdminTitleSchema'
+    #     - $ref: '#/components/schemas/AdminTextSchema'
+    #     - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+    #     - $ref: '#/components/schemas/BasicPositionSchema'
+    #     - $ref: '#/components/schemas/BasicIsActiveSchema'
+    #     - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    ClientPartnerSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/ClientTitleSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicLinkSchema'
+
+    ClientTitleSchema:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "RU Test title title"
+
+    ClientTextSchema:
+      type: object
+      properties:
+        text:
+          type: string
+          example: "RU Test text text text text text text text"
+    
+    ClientBlogUserSchema:
+      type: object
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - properties:
+            first_name:
+              type: string
+              example: "Alex"
+            last_name:
+              type: string
+              example: "Petrov"
+            avatar:
+              type: string
+              example: "http://127.0.0.1:8982/storage/blogs/medias/5x4KyUGHMO7MdS25dVgtVhGqNfzZoGgC.jpg"
+              nullable: true
+        - $ref: "#/components/schemas/BasicEmailSchema"
+
+    ClientBlogCategorySchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/BasicTitleSchema"
+
+    ClientHashtagSchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/BasicHashtagSchema"
+    
+    ClientBlogSchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/ClientTitleSchema"
+        - $ref: "#/components/schemas/ClientTextSchema"
+        - $ref: "#/components/schemas/BasicMediaWithExtensionSchema"
+        - $ref: "#/components/schemas/BasicCreatedAtSchema"
+        - properties:
+            user:
+              type: object
+              $ref: "#/components/schemas/ClientBlogUserSchema"
+            categoty:
+              type: object
+              $ref: "#/components/schemas/ClientBlogCategorySchema"
+            hashtags:
+              type: array
+              items:
+                $ref: "#/components/schemas/ClientHashtagSchema"
+
+    ClientTeamSocialSchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/BasicSlugSchema"
+        - $ref: "#/components/schemas/BasicLinkSchema"
+
+    ClientTeamSchema:
+      allOf:
+        - type: object
+        - $ref: "#/components/schemas/BasicIdSchema"
+        - $ref: "#/components/schemas/BasicFirstNameSchema"
+        - $ref: "#/components/schemas/BasicLastNameSchema"
+        - $ref: "#/components/schemas/BasicAvatarSchema"
+        - properties:
+            position:
+              type: string
+              example: "Accountant"
+            socials:
+              $ref: "#/components/schemas/ClientTeamSocialSchema"
+    
+    ClientAboutStepSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/BasicCharSchema'
+        - $ref: '#/components/schemas/BasicTitleSchema'
+        - $ref: '#/components/schemas/BasicTextSchema'
+
+    ClientServiceSchema:
+      allOf:
+        - type: object
+        - $ref: '#/components/schemas/BasicIdSchema'
+        - $ref: '#/components/schemas/BasicTitleSchema'
+        - $ref: '#/components/schemas/BasicTextSchema'
+        - $ref: '#/components/schemas/BasicMediaWithExtensionSchema'
+        - $ref: '#/components/schemas/BasicCreatedAtSchema'
+
+    ClientStepSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/BasicTitleSchema'
+        -  $ref: '#/components/schemas/BasicTextSchema'
+
+    ClientProcessSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/BasicTitleSchema'
+        -  $ref: '#/components/schemas/BasicTextSchema'
+
+    ClientChoosesSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/BasicTitleSchema'
+        -  $ref: '#/components/schemas/BasicTextSchema'
+
+    ClientWorkHour:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/BasicFromSchema'
+        -  $ref: '#/components/schemas/BasicToSchema'
+
+    ClientTextTranslateSchema:
+      allOf:
+        -  type: object
+        -  $ref: '#/components/schemas/BasicIdSchema'
+        -  $ref: '#/components/schemas/BasicSlugSchema'
+        -  $ref: '#/components/schemas/BasicIconSchema'
+        -  $ref: '#/components/schemas/AdminTitleSchema'
+        -  $ref: '#/components/schemas/AdminTextSchema'
+        -  $ref: '#/components/schemas/BasicCreatedAtSchema'
+      
+    #endregion
+  headers:
+  parameters:
+    #region Admin      
+    perPageParam:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        example: 10
+        default: 15
+        
+    searchParam:
+      name: s
+      in: query
+      required: true
+      schema:
+        type: string
+        example: "Alice"
+
+    CompanyIdParam:
+      name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+
+    PartnerIdParam:
+      name: partner_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+    
+    BlogCategoryIdParam:
+      name: blog_category_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 2
+    
+    HashtagIdParam:
+      name: hastag_id
+      in: path
+      required: true
+      Schema:
+        type: integer
+        example: 2
+    
+    #endregion
+    CountryParam:
+      name: country_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 2
+
+    AddressParam:
+      name: address_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 5
+
+    PhoneParam:
+      name: phone_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 7
+    
+    ServiceParam:
+      name: service_id
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 1
+
+    StepParam:
+      name: step_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+
+    UserParam:
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+        
+    LimitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        example: 5
+        default: 4
+    
+    ProcessParam:
+      name: process_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+        
+    ChooseParam:
+      name: choose_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+    
+    SlugParam:
+      name: slug
+      in: query
+      schema:
+        type: string
+        example: "service-title"
+    
+    TextTranslateParam:
+      name: text_translate_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+
+    WorkHourParam:
+      name: work_hour_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 2
+
+  responses:
+    NoContentResponse:
+      description: "No content"
+
+  #region Admin
+    AdminAboutsCompanyResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              - $ref: '#/components/schemas/AdminAboutCompanySchema'
+
+    AdminAboutCompanyResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminAboutCompanySchema'
+
+    AdminPartnersResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              - $ref: '#/components/schemas/AdminPartnerSchema'
+
+    AdminPartnerResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminPartnerSchema'
+
+    AdminBlogResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items: 
+              $ref: "#/components/schemas/AdminBlogSchema"
+            
+    AdminBlogPaginateResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicPaginatorSchema"
+              - properties:
+                  data:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/AdminBlogSchema"
+    
+    AdminBlogShowResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AdminBlogSchema"
+            
+    AdminAboutsStepResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminAboutStepSchema'
+
+    AdminAboutsStepsResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AdminAboutStepSchema'
+
+    AdimnServiceResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminServiceSchema'
+
+    AdimnServicesResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AdminServiceSchema'
+
+    AdminStepResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminStepSchema'
+
+    AdminStepsResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AdminStepSchema'
+
+    AdminProcessResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AdminProcessSchema"
+            
+    AdminProcessesResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/AdminProcessSchema"
+    
+    AdminChooseResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AdminChooseSchema"
+            
+    AdminChoosesResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/AdminChooseSchema"  
+
+    AdminUserResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminUserSchema'
+    
+    AdminUsersResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: '#/components/schemas/BasicPaginatorSchema'
+              -  properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdminUserSchema'
+                      
+    AdminWorkWoursResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AdminWorkHour'
+              
+    AdminWorkWourResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminWorkHour'
+
+    AdminTextTranslateResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminTextTranslateSchema'
+
+    AdminTextTranslatesResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AdminTextTranslateSchema'
+              
+    AdminProfileResponse:
+      description: "Success"
+      content: 
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/AdminProfileSchema"
+
+  #endregion
+
+    #region Client
+    GetClientAddressesResponse:
+      description: "Addresses"
+      content:
+        application/json:
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/ClientAddressSchema'
+
+    ClientEmailsRespose:
+      description: "Emails"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientEmailSchema'
+
+    GetClientPhonesResponse:
+      description: "Phones"
+      content:
+        application/json:
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/ClientPhoneSchema'
+
+    ClientPartnersResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/ClientPartnerSchema'
+
+    ClientHashtagsResponse:
+      description: "Response hashTags"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ClientHashtagSchema"
+
+    ClientBlogCategoryResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: "#/components/schemas/ClientBlogCategorySchema"
+
+    ClientBlogsPaginateResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicPaginatorSchema"
+              - properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ClientBlogSchema"
+
+    ClientBlogsPopularResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            items:
+              $ref: "#/components/schemas/ClientBlogSchema"
+
+    ClientBlogShowResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: "#/components/schemas/ClientBlogSchema"
+
+    ClientTeamResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicPaginatorSchema"
+              - properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ClientTeamSchema"
+                      
+    ClientBlogStepsResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientAboutStepSchema'
+
+    ClientServiceRespose:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientServiceSchema'
+
+    ClientStepResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientStepSchema'
+
+    ClientProcessResponse:
+      description: "Process"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientProcessSchema'
+    
+    ClientProcessesResponse:
+      description: "Process"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientProcessSchema'
+
+    ClientChoosesResponse:
+      description: "Process"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientChoosesSchema'
+
+    ClientWorkHourResponse:
+      description: "Process"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ClientWorkHour'
+
+    ClientTextTranslatesResponse:
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ClientTextTranslateSchema"
+    #endregion
+
+  requestBodies:
+    #region Admin
+    AdminUpdateAboutCompanyRequest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: '#/components/schemas/AdminTitleSchema'
+              - $ref: '#/components/schemas/AdminTextSchema'
+              - $ref: '#/components/schemas/BasicUploadMediaSchema'
+
+    AdminCreatePartnerRequest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: '#/components/schemas/AdminTitleSchema'
+              - $ref: '#/components/schemas/BasicUploadMediaSchema'
+              - $ref: '#/components/schemas/BasicLinkSchema'
+    #endregion
+    
+    #region
+    AdminAboutStepRequest:
+      content:
+        application/json:
+          schema:
+            required:
+              - char_en
+              - char_ru
+              - char_tk
+              - title_en
+              - title_ru
+              - title_tk
+              - text_en
+              - text_ru
+              - text_tk
+            allOf:
+            - type: object
+            - $ref: '#/components/schemas/BasicIdSchema'
+            - $ref: '#/components/schemas/AdminCharSchema'
+            - $ref: '#/components/schemas/AdminTitleSchema'
+            - $ref: '#/components/schemas/AdminTextSchema'
+            - $ref: '#/components/schemas/BasicPositionSchema'
+            - $ref: '#/components/schemas/BasicIsActiveSchema'
+            - $ref: '#/components/schemas/BasicCreatedAtAndUpdatedAtSchema'
+
+    AdminCreateServiceRequest:
+      content:
+        multipart/form-data:
+          schema:
+            required:
+              - title_en
+              - title_ru
+              - title_tk
+              - text_en
+              - text_ru
+              - text_tk
+              - media
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicIdSchema"
+              - $ref: "#/components/schemas/AdminTitleSchema"
+              - $ref: "#/components/schemas/AdminTextSchema"
+              - $ref: "#/components/schemas/BasicMediaSchema"
+              - $ref: "#/components/schemas/BasicIsActiveSchema"
+              - $ref: "#/components/schemas/BasicPositionSchema"
+
+    AdminUpdateServiceRequest:
+      content:
+        multipart/form-data:
+          schema:
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicIdSchema"
+              - $ref: "#/components/schemas/AdminTitleSchema"
+              - $ref: "#/components/schemas/AdminTextSchema"
+              - $ref: "#/components/schemas/BasicMediaSchema"
+              - $ref: "#/components/schemas/BasicIsActiveSchema"
+              - $ref: "#/components/schemas/BasicPositionSchema"
+
+    AdminUpdateStepRquest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: '#/components/schemas/AdminTitleSchema'
+              -  $ref: '#/components/schemas/AdminTextSchema'
+              -  $ref: '#/components/schemas/BasicPositionSchema'
+              -  $ref: '#/components/schemas/BasicIsActiveSchema'
+
+    AdminUpdateProcessRquest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: '#/components/schemas/AdminTitleSchema'
+              -  $ref: '#/components/schemas/AdminTextSchema'
+              -  $ref: '#/components/schemas/BasicPositionSchema'
+              -  $ref: '#/components/schemas/BasicIsActiveSchema'
+
+    AdminUpdateChoosesRquest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: '#/components/schemas/AdminTitleSchema'
+              -  $ref: '#/components/schemas/AdminTextSchema'
+              -  $ref: '#/components/schemas/BasicPositionSchema'
+              -  $ref: '#/components/schemas/BasicIsActiveSchema'
+
+    AdminUpdateWorkHourRequest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: '#/components/schemas/AdminTitleSchema'
+              -  $ref: '#/components/schemas/BasicFromSchema'
+              -  $ref: '#/components/schemas/BasicToSchema'
+              -  $ref: '#/components/schemas/BasicPositionSchema'
+              -  $ref: '#/components/schemas/BasicIsActiveSchema'
+
+    AdminCreateUserRequest:
+      content:
+        application/json:
+          schema:
+            required:
+              -  first_name
+              -  last_name
+              -  email
+              -  position_en
+              -  position_ru
+              -  position_tk
+            allOf:
+              -  type: object
+              -  $ref: "#/components/schemas/BasicFirstNameSchema"
+              -  $ref: "#/components/schemas/BasicLastNameSchema"
+              -  $ref: "#/components/schemas/BasicEmailSchema"
+              -  $ref: "#/components/schemas/BasicUploadAvatarSchema"
+              -  $ref: "#/components/schemas/BasicIsAdminSchema"
+              -  $ref: "#/components/schemas/AdminPositonSchema"
+              -  $ref: "#/components/schemas/BasicIsActiveSchema"
+
+    AdminUpdateUserRequest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              -  type: object
+              -  $ref: "#/components/schemas/BasicFirstNameSchema"
+              -  $ref: "#/components/schemas/BasicLastNameSchema"
+              -  $ref: "#/components/schemas/BasicEmailSchema"
+              -  $ref: "#/components/schemas/BasicUploadAvatarSchema"
+              -  $ref: "#/components/schemas/BasicIsAdminSchema"
+              -  $ref: "#/components/schemas/AdminPositonSchema"
+              -  $ref: "#/components/schemas/BasicIsActiveSchema"
+
+    AdminCreateTextTranslateRequest:
+      content:
+        application/json:
+          schema:
+            required:
+              - title_en
+              - title_ru
+              - title_tk
+              - text_en
+              - text_ru
+              - text_tk
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicIconSchema"
+              - $ref: "#/components/schemas/AdminTitleSchema"
+              - $ref: "#/components/schemas/AdminTextSchema"
+              - $ref: "#/components/schemas/BasicIsActiveSchema"
+              - $ref: "#/components/schemas/BasicPositionSchema"
+    
+    AdminUpdateTextTranslateRequest:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+              - $ref: "#/components/schemas/BasicIconSchema"
+              - $ref: "#/components/schemas/AdminTitleSchema"
+              - $ref: "#/components/schemas/AdminTextSchema"
+              - $ref: "#/components/schemas/BasicIsActiveSchema"
+              - $ref: "#/components/schemas/BasicPositionSchema"
+
+    #endregion
+  securitySchemas:
+    bearerToken: []
+  examples:
+x-webhooks:

@@ -2,14 +2,12 @@
 
 namespace App\Models\Base;
 
-use App\Models\Device;
 use App\Models\Enums\UserCodeEnum;
 use App\Models\UserCode;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Str;
 
 /**
  * @mixin Model
@@ -58,30 +56,6 @@ abstract class JWTAuth extends Authenticatable implements JWTSubject
         return $this->codes()->updateOrCreate(
             compact('type'),
             array_merge(compact('code', 'type'), ['expired_at' => $expiredAt])
-        );
-    }
-
-    /**
-     * @param string $deviceId
-     * @return Device
-     */
-    public function addDevice(string $deviceId): Device
-    {
-        return $this->devices()->updateOrCreate([
-                'device_id' => $deviceId,
-            ],
-            [
-                'refresh_token' => Str::uuid(),
-                'device_id' => $deviceId,
-                'device_name' => '',
-                'user_agent' => '',
-                'os' => '',
-                'os_version' => '',
-                'app_version' => '',
-                'ip_address' => '',
-                'location' => '',
-                'ws_token' => md5((string) microtime())
-            ]
         );
     }
 }

@@ -18,18 +18,4 @@ class UserRepository extends AuthorizationEmailModelRepository
         return User::class;
     }
 
-    /**
-     * @param integer $phoneCountryId
-     * @param string $phone
-     * @return User
-     */
-    public function findUserByPhoneCountryIdAndPhoneNumber(int $phoneCountryId, string $phone): User
-    {
-        return $this->getModeClone()->newQuery()->where([
-                                                                ['phone_country_id', '=', $phoneCountryId],
-                                                                ['phone', '=', $phone],
-                                                            ])
-                                                            ->firstOrFail();
-    }
-
 }

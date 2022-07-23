@@ -32,11 +32,10 @@ class Message extends Model
      * @var array $casts
      */
     public $casts = [
-        'chat_id' => 'integer',
-        'user_id' => 'integer',
-        'parent_id' => 'integer',
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp'
+        'chat_id',
+        'user_id',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     /**
@@ -45,7 +44,7 @@ class Message extends Model
      */
     protected function newBroadcastableEvent(string $event): BroadcastableModelEventOccurred
     {
-        return (new BroadcastableModelEventOccurred($this, $event))->dontBroadcastToCurrentUser();
+        return (new BroadcastableModelEventOccurred($this, $event)); //->dontBroadcastToCurrentUser();
     }
 
     /**
@@ -55,6 +54,7 @@ class Message extends Model
     public function broadcastOn(string $event): array
     {
         return [
+            // new Channel("chat.{$this->chat_id}"),
             new PrivateChannel("chat.{$this->chat_id}")
         ];
     }

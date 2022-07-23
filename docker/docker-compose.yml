@@ -36,13 +36,13 @@ services:
             dockerfile: Dockerfile
         container_name: job-php
         restart: unless-stopped
-        extra_hosts:
-            - "host.docker.internal:host-gateway"       # for Xdebug
+        # extra_hosts:
+            # - "host.docker.internal:host-gateway"       # for Xdebug
         tty: true
         environment:
             # PHP_IDE_CONFIG: "serverName=job-php-fpm"    # for Xdebug
             XDEBUG_MODE: debug
-            XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003 remote_enable=1
+            XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
         expose:
             - 9000
         volumes:
@@ -188,22 +188,21 @@ services:
     #     networks:
     #         - job_network
 
-    swagger-ui:
-        image: swaggerapi/swagger-ui
-        container_name: job-swagger-ui
-        ports:
-            - ${SWAGGER_PORT}:8080
+    redoc:
+        image: redocly/redoc
+        container_name: job-redoc
+        restart: unless-stopped
+        tty: true
         volumes:
-            - ../docs:/usr/share/nginx/html/doc
+            - ../docs/:/usr/share/nginx/html/swagger
         environment:
-            API_URL: doc/api-docs.yaml
-            URLS_PRIMARY_NAME: "CheckServer"
-            URLS: "[
-                        { url: 'doc/api-docs.yaml', name: 'Clients'},
-                        { url: 'doc/admin-api-docs.yaml', name: 'Admins'},
-                    ]"
+            - SPEC_URL=swagger/redocly.yaml
+        ports:
+            - 8081:80
+            - 5856:8080
         networks:
             - job_network
+
 networks:
     job_network:
         driver: bridge
