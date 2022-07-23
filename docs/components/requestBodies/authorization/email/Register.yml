@@ -1,0 +1,11 @@
+content: 
+  application/json: 
+    schema: 
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@gmail.com"
+        password:
+          type: string
+          example: "12345!Secret_"

@@ -15,16 +15,8 @@ final class RegisterEmailRequestDTO extends DataTransferObject implements FromRe
 
     public readonly string $email;
     public readonly string $password;
-
-    // public function __construct(
-    //     public readonly string $email,
-    //     public readonly string $password,
-    //     public readonly bool $shouldRemember
-    // ) {
-
-    // }
-
-    public static function makeFromRequest(Request|FormRequest $formRequest): static
+    
+    public static function makeFromRequest(Request|FormRequest $formRequest): self
     {
         return new static(
             email: $formRequest->get('email'),

@@ -1,0 +1,16 @@
+description: "Validate error"
+content:
+  application/json:
+    scheme:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Validation Failed"
+        errors:
+          type: object
+          properties:
+            email:
+              type: array
+              items:
+                - "The email has already been taken."

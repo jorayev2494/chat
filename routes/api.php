@@ -6,52 +6,40 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::group(['prefix' => 'auth', 'namespace' => 'Auth', 'middleware' => ['cors'], 'as' => 'auth.'], static function (Router $router): void {
+    $router->post('/register', 'AuthorizationController@register')->name('register');
+    $router->post('/login', 'AuthorizationController@login')->name('login');
+    $router->get('/verify', 'AuthorizationController@verify')->name('verify');
+    $router->get('/resend/verify', 'AuthorizationController@verify')->name('resend_verify');
 
-//Route::group(['prefix' => 'auth', 'as' => 'auth.'], function (): void {
-//
-//});
-
-Route::group(['prefix' => 'auth', 'middleware' => ['api'], 'namespace' => 'Auth'], static function (Router $router): void {
-    $router->post('/register', 'AuthorizationController@register');
-    $router->post('/login', 'AuthorizationController@login');
-
-    $router->group(['prefix' => 'phone', 'namespace' => 'Phone'], static function (Router $router): void {
-        $router->post('/code', 'AuthorizationPhoneController@registerCode');
-        $router->put('/code', 'AuthorizationPhoneController@getAccount');
-        // $router->post('/login', 'AuthorizationPhoneController@login');
+    $router->group(['prefix' => 'phone', 'namespace' => 'Phone', 'as' => 'phone.'], static function (Router $router): void {
+        $router->post('/code', 'AuthorizationPhoneController@registerCode')->name('register_code');
+        $router->put('/code', 'AuthorizationPhoneController@getAccount')->name('account');
+        $router->post('/resend/code', 'AuthorizationPhoneController@resendCode')->name('resend_code');
     });
 });
 
-Route::group(['middleware' => 'auth:api'], static function (Router $router): void {
+Route::group(['middleware' => ['cors', 'auth:api']], static function (Router $router): void {
     $router->controller('ProfileController')->group(static function (Router $router): void {
         $router->get('/profile', 'index');
         $router->post('/profile', 'update');
         $router->delete('/profile', 'destroy');
     });
 
+    $router->apiResource('/profile', 'ProfileController');
 
-//     Route::apiResource('/profile', 'ProfileController');
+    // $router->resource('/users', 'ApiController');
+    $router->post('/chats/create', 'ChatController@create');
+    $router->apiResource('/chats', 'ChatController', ['except' => 'update']);
+    $router->post('/chats/{chat}', 'ChatController@update')->name('chats.update');
 
-//     // Route::get('/users', 'Api\UserController@index');
-//     Route::resource('/users', 'ApiController');
-//     Route::apiResource('/chats', 'Api\ChatController', ['except' => 'update']);
-//     Route::post('/chats/{chat}', ['uses' => 'Api\ChatController@update', 'as' => 'chats.update']);
+    $router->group(['namespace' => 'Message'], static function (Router $router): void {
+        $router->put('/messages/seen', 'MessageSeeController');
+    });
 });
 
-Route::get('/countries', static function () {
-    $result = Country::all();
-
-    return response()->json($result);
+Route::group(['namespace' => 'Public'], static function (Router $router): void {
+    $router->get('/countries', 'CountryController');
 });
 
 Route::post('/ping/ws', 'TestController@pingWs');
