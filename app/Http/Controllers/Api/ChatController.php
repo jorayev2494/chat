@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Message\MessageCreateRequest;
+use App\Http\Requests\Api\Message\MessageStoreRequest;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\MessageResource;
 use App\Models\User;
@@ -35,7 +37,13 @@ class ChatController extends Controller
         $result = $this->service->getUserChats($this->authUser);
 
         return response()->json(ChatResource::collection($result));
-        // return response()->json($result);
+    }
+
+    public function create(MessageCreateRequest $request): JsonResponse
+    {
+        $result = $this->service->create($this->authUser, $request->validated());
+
+        return response()->json(MessageResource::make($result));
     }
 
     /**
@@ -44,9 +52,9 @@ class ChatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResponse
+    public function store(MessageStoreRequest $request): JsonResponse
     {
-        $result = $this->service->store($this->authUser, $request->all());
+        $result = $this->service->store($this->authUser, $request->validated());
 
         return response()->json(MessageResource::make($result));
     }
