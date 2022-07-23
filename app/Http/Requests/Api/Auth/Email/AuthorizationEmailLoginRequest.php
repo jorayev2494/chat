@@ -21,7 +21,6 @@ class AuthorizationEmailLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'device_id' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string|min:6'
         ];

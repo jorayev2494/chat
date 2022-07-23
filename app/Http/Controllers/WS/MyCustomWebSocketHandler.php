@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use SplObjectStorage;
 use stdClass;
 
-class MyCustomWebSocketHandler extends WebSocketHandler // implements MessageComponentInterface
+class MyCustomWebSocketHandler extends WebSocketHandler implements MessageComponentInterface
 {
 
     private SplObjectStorage $clients;
@@ -40,7 +40,6 @@ class MyCustomWebSocketHandler extends WebSocketHandler // implements MessageCom
     public function onOpen(ConnectionInterface $connection)
     {
 
-        parent::onOpen($connection);
 
         // $this->clients->attach($connection);
         
@@ -52,10 +51,9 @@ class MyCustomWebSocketHandler extends WebSocketHandler // implements MessageCom
         Log::info(
             'WS onOpen: ',
             [
-                'httpRequest' => $connection->httpRequest,
                 'Constructor result: ' => (array) $request->headers,
                 'connection' => $connection,
-                // 'channelManager' => $this->channelManager->getUserFromRequest($connection),
+                'channelManager' => $this->channelManager->getUserFromRequest($connection),
                 'PHP_SERVER' => $_SERVER
             ]
         );

@@ -22,9 +22,9 @@ class MessageResource extends JsonResource
             'id' => $this->resource->id,
             'chat_id' => $this->resource->chat_id,
             'user_id' => $this->when(
-                !$this->resource->relationLoaded('user'),
-                $this->resource->user_id
-            ),
+                                    !$this->resource->relationLoaded('user'),
+                                    $this->resource->user_id
+                                ),
             'text' => $this->resource->text,
             'user' => UserResource::make($this->whenLoaded('user')),
             'parent_id' => $this->resource->parent_id,
@@ -34,12 +34,12 @@ class MessageResource extends JsonResource
             ),
             'medias' => MediaResource::collection($this->whenLoaded('medias')),
             'deleted_at' => $this->when(
-                false,
-                $this->resource->deleted_at
-            ),
+                                    false,
+                                    $this->resource->deleted_at?->format('Y-d-m H:i:s')
+                                ),
             'is_seen' => $this->when($this->resource->relationLoaded('see'), $this->resource->see?->is_seen),
-            'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->created_at,
+            'created_at' => $this->resource->created_at?->format('Y-d-m H:i:s'),
+            'updated_at' => $this->resource->created_at?->format('Y-d-m H:i:s'),
         ];
     }
 }

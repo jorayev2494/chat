@@ -20,8 +20,6 @@ return new class extends Migration
             $table->foreign('user_id')->on('users')->references('id')->nullOnDelete();
             $table->integer('chat_id')->unsigned();
             $table->foreign('chat_id')->on('chats')->references('id')->nullOnDelete();
-            $table->timestamp('confirmed_at')->nullable();
-            $table->boolean('is_private')->default(false);
             
             $table->softDeletes();
             
