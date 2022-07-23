@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete();
 
             $table->string('refresh_token')->unique();
-            $table->string('device_id')->unique();
+            $table->string('device_id');
             $table->string('device_name');
             $table->string('user_agent')->nullable();
             $table->string('os')->nullable();

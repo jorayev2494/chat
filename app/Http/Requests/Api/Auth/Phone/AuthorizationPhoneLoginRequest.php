@@ -25,6 +25,7 @@ class AuthorizationPhoneLoginRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
+            'device_id' => 'required|string',
             'phone_country_id' => 'required|integer|exists:countries,id',
             'phone_code' => 'required|integer|exists:user_codes,code',
             'phone' => 'required|string',

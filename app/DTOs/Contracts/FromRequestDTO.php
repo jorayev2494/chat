@@ -6,5 +6,5 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
 interface FromRequestDTO {
-    public static function makeFromRequest(Request|FormRequest $formRequest): static;
+    public static function makeFromRequest(Request|FormRequest $formRequest): self;
 }

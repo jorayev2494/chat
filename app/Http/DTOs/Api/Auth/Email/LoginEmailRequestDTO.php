@@ -12,21 +12,15 @@ final class LoginEmailRequestDTO extends DataTransferObject implements FromReque
     public readonly string $email;
     public readonly string $password;
     public readonly bool $shouldRemember;
+    public readonly string $device_id;
 
-    // public function __construct(
-    //     public readonly string $email,
-    //     public readonly string $password,
-    //     public readonly bool $shouldRemember
-    // ) {
-
-    // }
-
-    public static function makeFromRequest(Request|FormRequest $formRequest): static
+    public static function makeFromRequest(Request|FormRequest $formRequest): self
     {
         return new static(
             email: $formRequest->get('email'),
             password: $formRequest->get('password'),
             shouldRemember: $formRequest->has('remember_me'),
+            device_id: $formRequest->get('device_id')
         );
     }
 }
