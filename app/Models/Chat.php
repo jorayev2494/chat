@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ChatResource;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Chat extends Model
 {
     use HasFactory;
+    use BroadcastsEvents;
 
     /**
      * @var array $fillable
@@ -25,8 +29,9 @@ class Chat extends Model
      * @var array $casts
      */
     public $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
     ];
 
     /**

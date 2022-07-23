@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\MustVerifyPhoneTrait;
 use App\Models\Base\JWTAuth;
+use App\Models\Traits\MustVerifyEmailTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,13 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 
 class User extends JWTAuth 
 {
-    use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use MustVerifyEmailTrait;
     use MustVerifyPhoneTrait;
 
     /**
@@ -72,7 +72,7 @@ class User extends JWTAuth
     public function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => "{$this->first_name} {$this->last_name}"
+            get: fn (): ?string => !empty($fullName = "{$this->first_name} {$this->last_name}") ? $fullName : null
         );
     }
 
@@ -140,10 +140,23 @@ class User extends JWTAuth
         return $this->belongsTo(Country::class, 'phone_country_id', 'id');
     }
 
+    /**
+     * @return Attribute
+     */
     public function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => config('app.url') . "/storage/{$this->attributes['avatar']}"
+            get: static function (?string $value): ?string {
+                if (is_null($value)) {
+                    return null;
+                }
+
+                if (filter_var($value, FILTER_VALIDATE_URL)) {
+                    return $value;
+                }
+
+                return config('app.url') . "/storage/{$value}";
+            }
         );
     }
 }
